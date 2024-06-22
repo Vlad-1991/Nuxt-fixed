@@ -10,12 +10,25 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@pinia/nuxt": "^0.5.1",
+    "axios": "^1.7.2",
     "nuxt": "^3.12.2",
+    "photoswipe": "^5.4.2",
+    "pinia": "^2.1.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "pug": "^3.0.3",
     "pug-plain-loader": "^1.1.0"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
 }

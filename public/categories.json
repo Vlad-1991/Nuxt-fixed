@@ -1,0 +1,52 @@
+[
+  {
+    "plumbing": {
+      "text": "Plumbing",
+      "subcategory": [
+        {"text":  "Couplings", "url":  "couplings"},
+        {"text":  "Valves", "url":  "valves"},
+        {"text":  "Pumps", "url":  "pumps"}
+      ]
+    }
+  },
+  {
+    "lab_and_scientific": {
+      "text": "Lab & Scientific",
+      "subcategory": [
+        {"text":  "Glassware & Plasticware", "url":  "glassware-and-plasticware"},
+        {"text":  "Microscopes", "url":  "microscopes"},
+        {"text":  "Testers", "url":  "testers"}
+      ]
+    }
+  },
+  {
+    "hand_tools": {
+      "text" : "Hand Tools",
+      "subcategory": [
+        {"text":  "Benders", "url":  "benders"},
+        {"text":  "Cutters", "url":  "cutters"},
+        {"text":  "Tubing Tools", "url":  "tubing-tools"},
+        {"text":  "Blow and Spray Guns", "url":  "blow-and-spray-guns"}
+      ]
+    }
+  },
+  {
+    "optics": {
+      "text":  "Optics",
+      "subcategory": [
+        {"text":  "Binoculars", "url":  "binoculars"},
+        {"text":  "Telescopes", "url":  "telescopes"}
+      ]
+    }
+  },
+  {
+    "safety": {
+      "text": "Safety",
+      "subcategory": [
+        {"text":  "Tapes", "url":  "tapes"},
+        {"text":  "Fall Protection", "url":  "fall-protection"},
+        {"text":  "Signs", "url":  "signs"}
+      ]
+    }
+  }
+]
