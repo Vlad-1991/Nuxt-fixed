@@ -92,8 +92,9 @@ export const useCartStore = defineStore("CartStore", {
         /* get all products from local storage to Cart Store, this function will call one time, when user open website */
         getCart(): void{
             let cart
-          //  const cartItem: string | null = localStorage.getItem("cart");
-            const cartItem: string | null = null
+            console.log(localStorage.getItem("cart"))
+             const cartItem: string | null = localStorage.getItem("cart");
+             //const cartItem: string | null = null
             if (cartItem) {
                 cart = JSON.parse(cartItem);
             }

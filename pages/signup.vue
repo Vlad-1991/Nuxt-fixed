@@ -23,20 +23,33 @@
       small(v-if="auth[3].error") {{auth[3].error}}
 
     button(class="btn main mt10" type="sumbit" :disabled="!validatedAuth" @click="SignUp") Sign Up
+
+    teleport(to="body")
+      AppModal(v-if="modal" title="Activate your profile" @close="modal = false") We just sent instruction how to activate your profile on your email {{auth[0].val}}
 </template>
 
 <script setup lang="ts">
-import type {Ref} from "vue"
+import {onMounted, type Ref} from "vue"
 import {computed, ref} from "vue";
 const router = useRouter()
 import {useUiStore} from "~/stores/UiStore";
 import type {arrInfoType} from "~/utils/types/requestTypes";
 const UiStore = useUiStore()
 import {validateFieldWithIndex, checkAllFields} from "~/utils/composables/validation";
+import AppModal from "~/components/ui/AppModal.vue";
+import {useAuthStore} from "~/stores/AuthStore";
+const modal = ref(false)
+const AuthStore = useAuthStore()
 
 definePageMeta({
   layout: 'auth',
   middleware: 'auth',
+})
+
+onMounted(() => {
+  if(AuthStore.isAuthentificated){
+    router.push({name: 'index'})
+  }
 })
 
 /* array with all info about fields - email, name, password and repeated password with validation rules */
@@ -100,6 +113,7 @@ const SignUp = (): void => {
   }
   /* there will be sending data to server, if response positive - redirect to catalog page */
   console.log(authData)
-  router.push({name: 'catalog'})
+  modal.value = true
+  // router.push({name: 'catalog'})
 }
 </script>

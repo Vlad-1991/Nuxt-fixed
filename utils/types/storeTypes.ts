@@ -4,7 +4,14 @@ export type CartState = { cart: productInCartType }
 
 export interface authType {
     userName: string,
-    userId: string
+    token: string | null,
+    country: string,
+    adress: string,
+    phone: string,
+    orders: [],
+    promo: {},
+    email: string,
+    zip: string
 }
 
 export interface UiState {

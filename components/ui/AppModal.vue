@@ -2,7 +2,7 @@
   div
     div(class="modal-backdrop")
     div.modal
-      h3.center(v-if="title") {{ title }}
+      h3.center.mb50(v-if="title") {{ title }}
       div.center.mb50
         slot
       div.center.mt10

@@ -5,6 +5,7 @@
       TheBreadCrumbs.breadcrumbs.mt20
       ErrorMessage.mt20(v-if="UiStore.getErrorMessage")
       NuxtPage
+      slot
     TheFooter
 </template>
 
@@ -17,13 +18,21 @@ import ErrorMessage from "~/components/ui/ErrorMessage.vue";
 import TheFooter from "~/components/ui/TheFooter.vue";
 import {load} from "~/services/api/requests";
 import type {categoriesType, productWithId} from "~/utils/types/requestTypes";
+import {VUE_APP_FB_URL} from "~/utils/composables/constants";
 
 const UiStore = useUiStore();
 const CartStore = useCartStore();
+const AuthStore = useAuthStore()
 
-await cartInit();
+onMounted(async () => {
+  await cartInit();
+  await AuthStore.prepareToken()
+  if(AuthStore.isAuthentificated){
+    await AuthStore.setUserInfo()
+  }
+})
+
 let response;
-
 
 /* to get all products, putted by user to cart earlier, from local storage to Cart store */
 async function cartInit() {

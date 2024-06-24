@@ -27,11 +27,11 @@
                 h3.primary.inline-block(v-if="product_added") Product added to Cart
                 button.btn.orange.add_to_cart.block.mt20(@click="modal = true" type="button") Buy Now
           div.description(v-html="product[Object.keys(product)].description")
-        div.ml20(v-else)
+        div.ml20.center(v-else)
           h1 There are no this product
-          nuxt-link.link(:to="{name: 'catalog'}") Back to Catalog
+          nuxtLink.link(:to="{name: 'catalog'}") Back to Catalog
       div.reviews-block(v-else)
-        Reviews(:is-authentificated="AuthStore.isAuthentificated" :reviews="product[Object.keys(product)].reviews" :reviewSended="reviewSended"
+        Reviews(v-if="product" :is-authentificated="AuthStore.isAuthentificated" :reviews="product[Object.keys(product)].reviews" :reviewSended="reviewSended"
         @sendReview="sendReview" @backToProduct="showReviews = false")
 
     teleport(to="body")
@@ -58,9 +58,6 @@ definePageMeta({
   layout: 'default',
   middleware: 'query-rules'
 })
-
-
-
 
 const CartStore = useCartStore()
 const route = useRoute()
@@ -107,14 +104,7 @@ const initAddCart = () => {
 
 const reviewSended = ref<boolean>(false)
 
-if(AuthStore.isAuthentificated){
 
-  if(product){
-    let reviewIndex = product[Object.keys(product)].reviews.findIndex(el => el.userId === AuthStore.getUserId)
-
-    reviewSended.value = reviewIndex !== -1;
-  }
-}
 
 /* to collect user rating, add current date and time, optional review text and send this info to server */
 const sendReview = (ratingInfo: ratingInfoType): void => {
@@ -227,15 +217,24 @@ try {
   let products = data.value
   // console.log(products)
   products = products.filter((val: productWithId) => Object.keys(val)[0] === route.params.id)
-  product.value = products[0]
+  if(products[0]){
+    product.value = products[0]
+    writeCategoryAndSubcategory()
+  }
 
-  writeCategoryAndSubcategory()
 
 }catch (e: string | unknown){
   UiStore.setErrorMessage(e.message)
 }
 
+if(AuthStore.isAuthentificated){
 
 
+  if(product){
+    let prod = product.value
+    let reviewIndex = prod[Object.keys(prod)].reviews.findIndex(el => el.userId === AuthStore.getUserId)
+    reviewSended.value = reviewIndex !== -1;
+  }
+}
 
 </script>

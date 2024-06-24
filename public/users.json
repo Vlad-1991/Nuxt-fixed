@@ -1,0 +1,58 @@
+{
+  "users": {
+    "v_gmail_com": {
+      "name": "Vlad Okunev",
+      "email": "v@gmail.com",
+      "country": "United States",
+      "address": "California, Los Angeles, Angels str. 7",
+      "phone": "555-798-8611",
+      "zip": "75036",
+      "promo": {
+        "code": "YK118",
+        "value": "$-50 off",
+        "discount": 50
+      },
+      "orders": [
+        {
+          "num":  "#12345",
+          "status": "Active",
+          "delivery_date": "07-23-2024",
+          "products": ["Felco C16", "Mastercool 7007"]
+        },
+        {
+          "num":  "#12563",
+          "status": "New",
+          "delivery_date": "07-25-2024",
+          "products": ["Carson 116", "Gateway 556"]
+        }
+      ]
+    },
+    "john_carson_gmail_com": {
+      "name": "John Carson",
+      "email": "john.carson@gmail.com",
+      "country": "United States",
+      "address": "Minnesota, Town, Town str. 13",
+      "phone": "111-222-2457",
+      "zip": "75011",
+      "promo": {
+        "code": "KL569",
+        "value": "-10% off",
+        "disount": 10
+      },
+      "orders": [
+        {
+          "num":  "#73654",
+          "status": "Active",
+          "delivery_date": "07-15-2024",
+          "products": ["Item 1", "Item 3"]
+        },
+        {
+          "num":  "#36447",
+          "status": "New",
+          "delivery_date": "07-18-2024",
+          "products": ["Product 6", "Product 17"]
+        }
+      ]
+    }
+  }
+}

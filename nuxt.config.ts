@@ -9,9 +9,6 @@ export default defineNuxtConfig({
             },
         ]
     ],
-    axios: {
-        baseURL: process.env.VUE_APP_FB_URL || 'http://localhost:3000'
-    },
     imports: {
         dirs: ["stores"],
     },
@@ -24,8 +21,7 @@ export default defineNuxtConfig({
     },
     css: ['~/theme.css'],
     plugins: [
-        '~/plugins/fontawesome',
-        '~/plugins/axios.ts'
+        '~/plugins/fontawesome'
     ],
     vite: {
         vue: {
@@ -40,7 +36,8 @@ export default defineNuxtConfig({
         options: {
             linkActiveClass: 'active',
             linkExactActiveClass: 'active'
-        }
+        },
+        middleware: ['auth', 'main', 'queryRules']
     },
     app: {
         head: {
@@ -48,6 +45,8 @@ export default defineNuxtConfig({
                 {rel: "icon", type: "image/x-icon", href: "/lamotte.png"}
             ]
         }
-    }
-
+    },
+    routeRules: {
+        "/dashboard": { ssr: false }
+    },
 })

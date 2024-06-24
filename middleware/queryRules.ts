@@ -1,4 +1,8 @@
+import {useAuthStore} from "~/stores/AuthStore";
+
 export default defineNuxtRouteMiddleware((to, from) => {
+
+    const AuthStore = useAuthStore()
 
     const {name, params, hash} = to;
 
@@ -10,6 +14,13 @@ export default defineNuxtRouteMiddleware((to, from) => {
                 hash,
                 replace: true
             });
+        }
+    } else if (process.client) {
+        if (AuthStore.isAuthentificated && (to.name === 'signin' || to.name === 'signup' || to.name === 'forgotpassword')) {
+            return navigateTo({
+                name: 'index',
+                replace: true
+            })
         }
     }
 })

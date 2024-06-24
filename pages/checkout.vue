@@ -21,7 +21,12 @@
               td.td-left  {{ product.qty }}
               td.td-left  $ {{ product.price }}
               td.td-left  $ {{ (product.qty * parseFloat(product.price)).toFixed(2) }}
-        h3 Summary: ${{CartStore.getSummary.toFixed(2)}}
+        h3(v-if="promoPrice") Summary: ${{promoPrice}}
+        h3(v-else) Summary: ${{CartStore.getSummary.toFixed(2)}}
+        h3 Use your Promo Code:
+        div.form-control.promo.mb20
+          input.promo-field(type="text" id="adress" placeholder="" v-model.trim="promo" @input="checkPromo")
+          h3.red(v-if="promoMessage") {{promoMessage}}
         input.package.mr10(type="checkbox" v-model="sep_package")
         span.package Add separate package box for each product
         div.right
@@ -96,11 +101,15 @@ import {computed, reactive, ref, watch} from "vue";
 import type {Ref} from "vue"
 import AppModal from "~/components/ui/AppModal.vue";
 import CategorySide from "~/components/ui/CategorySide.vue";
+
 const CartStore = useCartStore()
 import {useUiStore} from "~/stores/UiStore";
 import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import type {arrInfoType, productInCartType} from "~/utils/types/requestTypes";
 import {validateChecked, validateFieldWithIndex} from "~/utils/composables/validation";
+import {useAuthStore} from "~/stores/AuthStore";
+
+const AuthStore = useAuthStore()
 
 definePageMeta({
   layout: 'default',
@@ -115,7 +124,11 @@ let thirdStep = ref(false)
 let sep_package = ref(false)
 let products = CartStore.getCartProducts
 
-if(products){
+const promo = ref('')
+const promoMessage = ref('')
+const promoPrice = ref<number>()
+
+if (products) {
   products = Object.keys(products).map((id: string) => ({...products[id]}))
 }
 
@@ -123,41 +136,41 @@ const modal = ref(false)
 
 /* all adress fields with rules of validation */
 const adress: Ref<arrInfoType[]> = ref([
-    {
-      label: 'Country',
-      val : '',
-      valid: false,
-    },
-    {
-      label: 'Adress',
-      val: '',
-      pattern: /^[a-zA-Z ]{10,50}$/,
-      valid: false,
-      activated: false,
-      error: '',
-      errorText: 'Please enter correct adress, minimum 10 symbols'
-    },
-    {
-      label: 'ZIP',
-      val: '',
-      pattern: /^[0-9]{5}$/,
-      valid: false,
-      error: '',
-      errorText: 'Please enter correct ZIP code, 5 symbols'
-    },
-   {
-      label: 'Phone',
-      val: '',
-      pattern: /^[0-9]{3}-{0,1}[0-9]{3}-{0,1}[0-9]{4}$/,
-      valid: false,
-      error: '',
-      errorText: 'Please enter correct Phone number, format: 123-456-7890 or 1234567890'
-    },
-   {
-      label: 'Post Service',
-      val: '',
-      valid: false,
-    }])
+  {
+    label: 'Country',
+    val: '',
+    valid: false,
+  },
+  {
+    label: 'Adress',
+    val: '',
+    pattern: /^[a-zA-Z .,0-9]{10,100}$/,
+    valid: false,
+    activated: false,
+    error: '',
+    errorText: 'Please enter correct adress, minimum 10 symbols'
+  },
+  {
+    label: 'ZIP',
+    val: '',
+    pattern: /^[0-9]{5}$/,
+    valid: false,
+    error: '',
+    errorText: 'Please enter correct ZIP code, 5 symbols'
+  },
+  {
+    label: 'Phone',
+    val: '',
+    pattern: /^[0-9]{3}-{0,1}[0-9]{3}-{0,1}[0-9]{4}$/,
+    valid: false,
+    error: '',
+    errorText: 'Please enter correct Phone number, format: 123-456-7890 or 1234567890'
+  },
+  {
+    label: 'Post Service',
+    val: '',
+    valid: false,
+  }])
 
 const payment: Ref<arrInfoType[]> = ref([
   {
@@ -175,7 +188,7 @@ const payment: Ref<arrInfoType[]> = ref([
 let validatedSecondStep = computed((): boolean => {
   let validCount: number = 0
   adress.value.forEach((el) => {
-    if(el.valid){
+    if (el.valid) {
       validCount++
     }
   })
@@ -186,7 +199,7 @@ let validatedSecondStep = computed((): boolean => {
 let validatedThirdStep = computed((): boolean => {
   let validCount: number = 0
   payment.value.forEach((el) => {
-    if(el.valid){
+    if (el.valid) {
       validCount++
     }
   })
@@ -219,8 +232,8 @@ const resetForm = (): void => {
     el.valid = false
   })
   payment.value.forEach(el => {
-    el.val =''
-    if(el.label !== 'Comment for Order'){
+    el.val = ''
+    if (el.label !== 'Comment for Order') {
       el.valid = false
     }
   })
@@ -230,7 +243,7 @@ const resetForm = (): void => {
 /* to collect all info from ordered products and filled input fields to object to send to server (must be added later with backend)
 after it created modal window about order info */
 const createOrder = async (): Promise<void> => {
-  let order: {[key: string]: (string | boolean | {})} = {}
+  let order: { [key: string]: (string | boolean | {}) } = {}
   order["country"] = adress.value[0].val
   order["adress"] = adress.value[1].val
   order["zip"] = adress.value[2].val
@@ -240,15 +253,30 @@ const createOrder = async (): Promise<void> => {
   order["comment"] = payment.value[1].val
   order["separatePackage"] = sep_package.value
   order["products"] = {
-    total: CartStore.getSummary.toFixed(2),
+    total: promoPrice.value ? promoPrice.value : CartStore.getSummary.toFixed(2),
     products: products
   }
-/* there must be sending order to server*/
-  console.log(order)
 
-  resetForm()
-  localStorage.removeItem("cart")
-  CartStore.clearCart()
-  modal.value = true
+
+
+/* there must be sending order to server*/
+console.log(order)
+
+resetForm()
+localStorage.removeItem("cart")
+CartStore.clearCart()
+modal.value = true
 }
+
+const checkPromo = () => {
+  if (AuthStore.isAuthentificated && promo.value === AuthStore.getPromoCode) {
+    promoMessage.value = 'You will receive' + AuthStore.getPromoValue
+    promoPrice.value = CartStore.getSummary.toFixed(2) - AuthStore.getPromoDiscount?.toFixed(2)
+    console.log(promoPrice.value)
+  } else {
+    promoMessage.value = ''
+    promoPrice.value = 0
+  }
+}
+
 </script>

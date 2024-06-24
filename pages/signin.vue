@@ -19,18 +19,29 @@
 </template>
 
 <script setup lang="ts">
-import type {Ref} from "vue"
+import {onMounted, type Ref} from "vue"
 import {computed, ref} from "vue";
 const router = useRouter()
 import {useUiStore} from "~/stores/UiStore";
+import {VUE_APP_FB_URL} from "~/utils/composables/constants";
 import type {arrInfoType} from "~/utils/types/requestTypes";
 const UiStore = useUiStore()
 import {validateFieldWithIndex} from "~/utils/composables/validation";
 import {checkAllFields} from "~/utils/composables/validation";
+import {useAuthStore} from "~/stores/AuthStore";
+import {login} from "~/services/api/auth";
+import {load} from "~/services/api/requests";
+const AuthStore = useAuthStore()
 
 definePageMeta({
   layout: 'auth',
-  middleware: 'auth',
+  middleware: ['auth', 'main']
+})
+
+onMounted(async () => {
+  if(AuthStore.isAuthentificated){
+    router.push({name: 'index'})
+  }
 })
 
 /* array with all info about fields - email and password, with validation rules */
@@ -58,14 +69,26 @@ const auth: Ref<arrInfoType[]> = ref([
 let validatedAuth = computed(() => checkAllFields(auth.value))
 
 /* to collect email, password to object and send to server */
-const SignIn = (): void => {
+const SignIn = async (): Promise<void> => {
   let authData = {
     email: auth.value[0].val,
     password: auth.value[1].val
   }
+  // console.log(authData)
+
   /* there will be sending data to server, if response positive - redirect to catalog page */
-  console.log(authData)
-  router.push({name: 'catalog'})
+  try {
+    let data = await login(authData)
+    AuthStore.setToken(data.idToken)
+    let userData = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${data.idToken}`)
+    if(userData){
+      AuthStore.setUserInfo(userData)
+    }
+    await router.push({name: 'index'})
+  } catch (e: any | undefined) {
+    UiStore.setErrorMessage(e.message);
+  }
+
 }
 
 </script>

@@ -1,8 +1,9 @@
-
 import type {authType} from "@/utils/types/storeTypes";
+import {load} from "~/services/api/requests";
+import {VUE_APP_FB_URL} from "~/utils/composables/constants";
 
 /* stub to simulate, that user authorized */
-let stub = (): authType => {
+let stub = () => {
     return {userName: 'Joy Carson', userId: 'joycarson@gmail.com'}
 }
 
@@ -11,30 +12,74 @@ export const useAuthStore = defineStore("AuthStore", {
     /* by default user isnt authorized */
     state: (): authType => {
         return {
-        userName: '',
-        userId: ''
-    }
-    //     return stub()
+            userName: '',
+            email: '',
+            country: '',
+            adress: '',
+            phone: '',
+            orders: [],
+            promo: {},
+            token: '',
+            zip: ''
+        }
+        //     return stub()
     },
     getters: {
+        getToken(): string | null {
+            return this.token
+        },
         getUserName(): string | null | undefined {
-            if(this.userName){
+            if (this.userName) {
                 return this.userName
             }
         },
         getUserId(): string | null | undefined {
-            if(this.userId){
-                return this.userId
+            if (this.email) {
+                return this.email
             }
         },
-        isAuthentificated(): boolean{
-            return !!this.getUserName
+        isAuthentificated(): boolean {
+            return !!this.getToken
+        },
+        getPromoCode(): string | null{
+            return this.promo.code
+        },
+        getPromoValue(): string | null{
+            return this.promo.value
+        },
+        getPromoDiscount(): number | null{
+            return this.promo.discount
         }
     },
     actions: {
+        setToken(token: string): void {
+            localStorage.setItem('TOKEN_KEY', token)
+            this.token = token
+        },
         logout(): void {
-            this.userName = ''
-            this.userId = ''
+            this.token = null
+            localStorage.removeItem('TOKEN_KEY')
+        },
+        async prepareToken(): Promise<void> {
+            const token = localStorage.getItem('TOKEN_KEY')
+            if (token) {
+                this.token = token
+            }
+        },
+
+        async setUserInfo(): Promise<void> {
+
+            let data = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)
+            let userData = data.data.value
+
+            this.userName = userData.name
+            this.zip = userData.zip
+            this.email = userData.email
+            this.country = userData.country
+            this.adress = userData.address
+            this.phone = userData.phone
+            this.orders = userData.orders
+            this.promo = userData.promo
         }
     }
 })

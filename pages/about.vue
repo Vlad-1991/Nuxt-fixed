@@ -19,6 +19,6 @@ import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 const UiStore = useUiStore()
 definePageMeta({
   layout: 'default',
-  middleware: 'query-rules'
+  middleware: ['query-rules']
 })
 </script>

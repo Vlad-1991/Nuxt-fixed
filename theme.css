@@ -223,6 +223,10 @@ h3 {
     resize: none;
 }
 
+.form-control.promo input {
+    width: auto;
+}
+
 .form-control small {
     color: #e53935;
 }
@@ -483,7 +487,7 @@ h3 {
 }
 
 .badge {
-    font-size: 0.8rem;
+    font-size: 1rem;
     border: 1px solid #eee;
     border-radius: 15px;
     padding: 0 .5rem;
@@ -1127,4 +1131,12 @@ fieldset {
 
 .footer-social img:hover{
     filter: brightness(3);
+}
+
+.promo-field {
+    width: 200px;
+}
+
+.half-width{
+    width: 50%;
 }

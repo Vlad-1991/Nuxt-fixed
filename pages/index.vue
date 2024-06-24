@@ -36,6 +36,7 @@ definePageMeta({
 })
 
 
+
 // console.log(categories_info.value)
 
 const products: Ref<productWithId[]> = ref([]);
