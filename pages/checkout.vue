@@ -106,8 +106,10 @@ const CartStore = useCartStore()
 import {useUiStore} from "~/stores/UiStore";
 import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import type {arrInfoType, productInCartType} from "~/utils/types/requestTypes";
-import {validateChecked, validateFieldWithIndex} from "~/utils/composables/validation";
+import {getKeyByValue, validateChecked, validateFieldWithIndex} from "~/utils/composables/validation";
 import {useAuthStore} from "~/stores/AuthStore";
+import {addOrder} from "~/services/api/requests";
+import {ORDERS_DATABASE, COUNTRIES} from "~/utils/composables/constants";
 
 const AuthStore = useAuthStore()
 
@@ -138,7 +140,7 @@ const modal = ref(false)
 const adress: Ref<arrInfoType[]> = ref([
   {
     label: 'Country',
-    val: AuthStore.country ? AuthStore.country : '',
+    val: COUNTRIES[AuthStore.country] ? COUNTRIES[AuthStore.country] : '',
     valid: false,
   },
   {
@@ -227,24 +229,34 @@ function toFirstStep(): void {
 
 /* to empty form after order confirmed */
 const resetForm = (): void => {
-  adress.value.forEach(el => {
-    el.val = ''
-    el.valid = false
-  })
-  payment.value.forEach(el => {
-    el.val = ''
-    if (el.label !== 'Comment for Order') {
+  if(!AuthStore.isAuthentificated){
+    adress.value.forEach(el => {
+      el.val = ''
       el.valid = false
-    }
-  })
-  sep_package.value = false
+    })
+    payment.value.forEach(el => {
+      el.val = ''
+      if (el.label !== 'Comment for Order') {
+        el.valid = false
+      }
+    })
+    sep_package.value = false
+  }
 }
 
 /* to collect all info from ordered products and filled input fields to object to send to server (must be added later with backend)
 after it created modal window about order info */
 const createOrder = async (): Promise<void> => {
-  let order: { [key: string]: (string | boolean | {}) } = {}
-  order["country"] = adress.value[0].val
+
+  let currentDate = new Date();
+  let day = currentDate.getDate();
+  let month = currentDate.getMonth() + 1;
+  let year = currentDate.getFullYear();
+  let formattedDate = (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day  + '-' + year;
+
+  let order: { [key: string]: (string | boolean | undefined | {}) } = {}
+  order["country"] = getKeyByValue(adress.value[0].val)
+  order["email"] = AuthStore.email ? AuthStore.email : ''
   order["adress"] = adress.value[1].val
   order["zip"] = adress.value[2].val
   order["phone"] = adress.value[3].val
@@ -252,6 +264,8 @@ const createOrder = async (): Promise<void> => {
   order["payMethod"] = payment.value[0].val
   order["comment"] = payment.value[1].val
   order["separatePackage"] = sep_package.value
+  order["status"] = 'New'
+  order["date"] = formattedDate
   order["products"] = {
     total: promoPrice.value ? promoPrice.value : CartStore.getSummary.toFixed(2),
     products: products
@@ -259,6 +273,12 @@ const createOrder = async (): Promise<void> => {
 
 /* there must be sending order to server*/
 console.log(order)
+  
+  try {
+    await addOrder(ORDERS_DATABASE, order)
+  }catch (e: string | unknown) {
+    UiStore.setErrorMessage(e.message)
+  }
 
 resetForm()
 localStorage.removeItem("cart")
@@ -275,6 +295,13 @@ const checkPromo = () => {
     promoMessage.value = ''
     promoPrice.value = 0
   }
+}
+
+if(AuthStore.isAuthentificated){
+  validateChecked(adress.value, 0)
+  validateFieldWithIndex(adress.value, 1)
+  validateFieldWithIndex(adress.value, 2)
+  validateFieldWithIndex(adress.value, 3)
 }
 
 </script>

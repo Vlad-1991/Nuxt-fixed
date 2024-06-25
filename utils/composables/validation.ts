@@ -1,4 +1,5 @@
 import type {arrInfoType, fieldType} from "@/utils/types/requestTypes";
+import {COUNTRIES} from "~/utils/composables/constants";
 
 /* validation of any text, phone input field, field cant be empty and must be valid by own RegExp pattern.
  If field activated once, then validation will be present */
@@ -24,6 +25,10 @@ export const validateField = (field: fieldType): void => {
 /* validation of checkbox - field must be selected */
 export const validateChecked = (infoArr: arrInfoType[], index: number): void => {
     infoArr[index].valid = infoArr[index].val !== '';
+}
+
+export function getKeyByValue(value: string) {
+    return Object.entries(COUNTRIES).find(([key, val]) => val === value)?.[0];
 }
 
 

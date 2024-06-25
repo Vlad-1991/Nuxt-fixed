@@ -9,23 +9,31 @@
       h3 My Promo Codes:
       p <span class="red">{{AuthStore.promo.code}}</span> : {{AuthStore.promo.value}}
       h3 My Orders:
-      table.table(v-if="AuthStore.orders" )
+      table.table(v-if="orders" )
         thead
         tr.center
           th  #
-          th  Delivery Date
+          th  Order Date
           th  Products
+          th Total
           th Status
           th Action
+          th Comment
+          th Post Service
         tbody
-          tr(v-for="(order, index) in AuthStore.orders" :key="order.num")
-            td {{ order.num }}
-            td {{ order.delivery_date }}
-            td  {{ order.products }}
+          tr(v-for="(order, index) in orders" :key="order.id")
+            td {{ order.id }}
+            td {{ order.date }}
+            td
+              ul(v-for="product in order.products.products")
+                li.left  {{product.name}}, {{product.qty}} pcs
+            td ${{order.products.total}}
             td
               span.badge(:class="classesMap[order.status]")  {{ order.status }}
             td
-              button.btn.danger(type="button") Cancel
+              button.btn.danger(type="button" @click="cancelOrder(order.id)") Cancel
+            td {{order.comment}}
+            td {{order.postService}}
     main.main-side.ml20(v-if="settings" )
       h3 My Settings
       h4.link(@click="settings = false") Back to Dashboard
@@ -67,13 +75,14 @@ import {classesMap, COUNTRIES, VUE_APP_FB_URL} from "../utils/composables/consta
 import {validateChecked} from "~/utils/composables/validation";
 import {validateFieldWithIndex} from "~/utils/composables/validation";
 import type {arrInfoType} from "~/utils/types/requestTypes";
+import {loadOrdersById} from "~/services/api/requests";
 
 definePageMeta({
   layout: 'default',
   middleware: 'query-rules'
 })
 const router = useRouter()
-
+const orders = ref([])
 const UiStore = useUiStore()
 const AuthStore = useAuthStore()
 /* all adress fields with rules of validation */
@@ -150,12 +159,27 @@ function getKeyByValue(value: string) {
   return Object.entries(COUNTRIES).find(([key, val]) => val === value)?.[0];
 }
 
+const getOrdersByEmailId = async (): Promise<void> => {
+  const response = await loadOrdersById(AuthStore.email)
+  await AuthStore.prepareToken()
+  await AuthStore.setUserInfo()
+  let filteredOrders = response.filter((order: {}) => {
+    console.log(order.email)
+    console.log(AuthStore.email)
+    return (order.email === AuthStore.email)
+  })
 
-// if(process.client){
-//   const AuthStore = useAuthStore()
-//   if (!AuthStore.isAuthentificated) {
-//      router.push({ name: "index" })
-//   }
-// }
+  return filteredOrders
+}
+
+const cancelOrder = async (id: number): Promise<void> => {
+//   there will be PUT request to server to update order
+}
+
+
+ orders.value = await getOrdersByEmailId()
+console.log( orders.value)
+// // console.log(orders.value)
+
 
 </script>
