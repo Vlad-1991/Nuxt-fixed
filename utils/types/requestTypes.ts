@@ -5,6 +5,17 @@ export interface categoriesType {
     }
 }
 
+export interface userDataType {
+    country: string,
+    address: string,
+    zip: string,
+    phone: string,
+    email: string,
+    orders: {},
+    promo: {},
+    name: string
+}
+
 export interface productType {
     category: string,
     description: string,

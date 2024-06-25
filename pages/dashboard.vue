@@ -52,7 +52,8 @@
           input(type="tel"
              placeholder="123-456-7890" id="phone" v-model.trim="adress[3].val" @input="validateFieldWithIndex(adress, 3)")
           small(v-if="adress[3].error")  {{adress[3].error}}
-      button.btn.main(:disabled="!validateSettings") Save
+      button.btn.main(:disabled="!validateSettings" @click="updateUserOnServer") Save
+      p(v-if="updated") Your profile has been updated
 
 </template>
 
@@ -77,7 +78,8 @@ const UiStore = useUiStore()
 const AuthStore = useAuthStore()
 /* all adress fields with rules of validation */
 
-let settings = ref(false)
+const settings = ref(false)
+const updated = ref(false)
 
 const adress: Ref<arrInfoType[]> = ref([
   {
@@ -135,6 +137,19 @@ let validateSettings = computed((): boolean => {
   })
   return validCount === adress.value.length;
 })
+
+const updateUserOnServer = async () => {
+    await AuthStore.updateUserinfo(getKeyByValue(adress.value[0].val), adress.value[1].val, adress.value[2].val, adress.value[3].val)
+    updated.value = true
+    setTimeout(() => {
+      updated.value = false
+    }, 3000)
+}
+
+function getKeyByValue(value: string) {
+  return Object.entries(COUNTRIES).find(([key, val]) => val === value)?.[0];
+}
+
 
 // if(process.client){
 //   const AuthStore = useAuthStore()

@@ -9,6 +9,9 @@ export const classesMap = {
     Pending: 'warning'
 }
 
+
+
+
 export const COUNTRIES = {
     'United States': 'usa',
     'Mexico': 'mexico',

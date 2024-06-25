@@ -138,12 +138,12 @@ const modal = ref(false)
 const adress: Ref<arrInfoType[]> = ref([
   {
     label: 'Country',
-    val: '',
+    val: AuthStore.country ? AuthStore.country : '',
     valid: false,
   },
   {
     label: 'Adress',
-    val: '',
+    val: AuthStore.adress ? AuthStore.adress : '',
     pattern: /^[a-zA-Z .,0-9]{10,100}$/,
     valid: false,
     activated: false,
@@ -152,7 +152,7 @@ const adress: Ref<arrInfoType[]> = ref([
   },
   {
     label: 'ZIP',
-    val: '',
+    val: AuthStore.zip ? AuthStore.zip : '',
     pattern: /^[0-9]{5}$/,
     valid: false,
     error: '',
@@ -160,7 +160,7 @@ const adress: Ref<arrInfoType[]> = ref([
   },
   {
     label: 'Phone',
-    val: '',
+    val: AuthStore.phone ? AuthStore.phone : '',
     pattern: /^[0-9]{3}-{0,1}[0-9]{3}-{0,1}[0-9]{4}$/,
     valid: false,
     error: '',
@@ -256,8 +256,6 @@ const createOrder = async (): Promise<void> => {
     total: promoPrice.value ? promoPrice.value : CartStore.getSummary.toFixed(2),
     products: products
   }
-
-
 
 /* there must be sending order to server*/
 console.log(order)
