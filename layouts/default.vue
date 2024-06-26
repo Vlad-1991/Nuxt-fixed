@@ -17,8 +17,7 @@ import TheBreadCrumbs from "~/components/ui/TheBreadCrumbs.vue";
 import ErrorMessage from "~/components/ui/ErrorMessage.vue";
 import TheFooter from "~/components/ui/TheFooter.vue";
 import {load} from "~/services/api/requests";
-import type {categoriesType, productWithId} from "~/utils/types/requestTypes";
-import {VUE_APP_FB_URL} from "~/utils/composables/constants";
+import type {categoriesType} from "~/utils/types/requestTypes";
 
 const UiStore = useUiStore();
 const CartStore = useCartStore();

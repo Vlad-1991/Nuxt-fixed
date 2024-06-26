@@ -3,7 +3,8 @@
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
-    main.main-side.ml20(v-if="!settings")
+    div.loader(v-if="loader")
+    main.main-side.ml20(v-if="!settings && !loader")
       h1 Hello, {{AuthStore.userName}}!
       h4.link(@click="showSettings") My Settings
       h3 My Promo Codes:
@@ -31,9 +32,10 @@
             td
               span.badge(:class="classesMap[order.status]")  {{ order.status }}
             td
-              button.btn.danger(type="button" @click="cancelOrder(order.id)") Cancel
+              button.btn.danger(v-if="order.status !=='Canceled'" type="button" @click="cancelOrder(order.id, order)") Cancel
             td {{order.comment}}
             td {{order.postService}}
+
     main.main-side.ml20(v-if="settings" )
       h3 My Settings
       h4.link(@click="settings = false") Back to Dashboard
@@ -71,24 +73,36 @@ import {useUiStore} from "~/stores/UiStore"
 import {useAuthStore} from "~/stores/AuthStore"
 import ToggleSidebar from "~/components/ui/ToggleSidebar.vue"
 import CategorySide from "~/components/ui/CategorySide.vue"
-import {classesMap, COUNTRIES, VUE_APP_FB_URL} from "../utils/composables/constants"
+import {classesMap, COUNTRIES, ORDERS_DATABASE} from "../utils/composables/constants"
 import {validateChecked} from "~/utils/composables/validation";
 import {validateFieldWithIndex} from "~/utils/composables/validation";
 import type {arrInfoType} from "~/utils/types/requestTypes";
-import {loadOrdersById} from "~/services/api/requests";
+import {loadOrdersById, updateInDatabase} from "~/services/api/requests";
 
 definePageMeta({
   layout: 'default',
   middleware: 'query-rules'
 })
+
 const router = useRouter()
 const orders = ref([])
 const UiStore = useUiStore()
 const AuthStore = useAuthStore()
+const loader = ref(true)
 /* all adress fields with rules of validation */
 
 const settings = ref(false)
 const updated = ref(false)
+
+onMounted(async () => {
+  try {
+    orders.value = await getOrdersByEmailId()
+    loader.value = false
+  }catch (e: string | unknown) {
+    UiStore.setErrorMessage(e.message)
+  }
+
+})
 
 const adress: Ref<arrInfoType[]> = ref([
   {
@@ -160,26 +174,37 @@ function getKeyByValue(value: string) {
 }
 
 const getOrdersByEmailId = async (): Promise<void> => {
+    await AuthStore.prepareToken()
+   await AuthStore.setUserInfo()
   const response = await loadOrdersById(AuthStore.email)
-  await AuthStore.prepareToken()
-  await AuthStore.setUserInfo()
+
   let filteredOrders = response.filter((order: {}) => {
     console.log(order.email)
     console.log(AuthStore.email)
     return (order.email === AuthStore.email)
   })
-
   return filteredOrders
 }
 
-const cancelOrder = async (id: number): Promise<void> => {
+const cancelOrder = async (id: number, order: {}): Promise<void> => {
+  let updatedOrder = order
+  updatedOrder.status = "Canceled"
 //   there will be PUT request to server to update order
+  try {
+    await updateInDatabase(ORDERS_DATABASE + id, updatedOrder)
+  }catch (e: string | unknown) {
+    UiStore.setErrorMessage(e.message)
+  }
 }
 
+// try {
+//   orders.value = await getOrdersByEmailId()
+// }catch (e: string | unknown) {
+//   UiStore.setErrorMessage(e.message)
+// }
+//
 
- orders.value = await getOrdersByEmailId()
-console.log( orders.value)
-// // console.log(orders.value)
+
 
 
 </script>

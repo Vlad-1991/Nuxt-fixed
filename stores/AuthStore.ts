@@ -4,12 +4,6 @@ import {VUE_APP_FB_URL} from "~/utils/composables/constants";
 import type {userDataType} from "~/utils/types/requestTypes";
 import {useUiStore} from "~/stores/UiStore";
 
-
-/* stub to simulate, that user authorized */
-let stub = () => {
-    return {userName: 'Joy Carson', userId: 'joycarson@gmail.com'}
-}
-
 const encode = (email: string): string => {
     return email.replace(/[@.]/g, '_');
 }
@@ -29,7 +23,6 @@ export const useAuthStore = defineStore("AuthStore", {
             token: '',
             zip: ''
         }
-        //     return stub()
     },
     getters: {
         getToken(): string | null {
@@ -75,6 +68,7 @@ export const useAuthStore = defineStore("AuthStore", {
         },
 
         async setUserInfo(): Promise<void> {
+
 
             try{
                 let data = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)

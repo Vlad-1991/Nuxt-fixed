@@ -1,6 +1,6 @@
 import { useNuxtApp, useAsyncData } from '#app'
 import requestAxios from "~/services/api/index";
-import type {userData, userDataType} from "~/utils/types/requestTypes";
+import type {userDataType} from "~/utils/types/requestTypes";
 import {ORDERS_DATABASE} from "~/utils/composables/constants";
 
 export async function load(key: string, url: string): Promise<any>{
@@ -25,4 +25,8 @@ export async function addOrder(url: string, order: { [key: string]: (string | bo
 export async function loadOrdersById(email: string){
      const {data} = await requestAxios.get(ORDERS_DATABASE)
     return data
+}
+
+export async function updateInDatabase(url: string, updatedObject: {}): Promise<void>{
+    await requestAxios.put(url, updatedObject)
 }

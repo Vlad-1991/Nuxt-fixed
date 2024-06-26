@@ -51,7 +51,8 @@ import Reviews from "~/components/ui/Reviews.vue";
 import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import type {productWithId, ratingInfoType, subcategoryType, productInCartType} from "~/utils/types/requestTypes";
 import {useCartStore} from "~/stores/CartStore";
-import {load} from "~/services/api/requests";
+import {load, updateInDatabase} from "~/services/api/requests";
+import {CATALOG_DATABASE, ORDERS_DATABASE} from "~/utils/composables/constants";
 
 
 definePageMeta({
@@ -107,7 +108,7 @@ const reviewSended = ref<boolean>(false)
 
 
 /* to collect user rating, add current date and time, optional review text and send this info to server */
-const sendReview = (ratingInfo: ratingInfoType): void => {
+const sendReview = async (ratingInfo: ratingInfoType): void => {
 
   let currentUserName = AuthStore.getUserName
   let currentUserId = AuthStore.getUserId
@@ -118,19 +119,29 @@ const sendReview = (ratingInfo: ratingInfoType): void => {
   let year = currentDate.getFullYear();
   let formattedDate = (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day  + '-' + year;
 
-  let newRating: number = (product[Object.keys(product)].rating * product[Object.keys(product)].rating_votes + parseInt(ratingInfo.ratingVote)) /
-      (product[Object.keys(product)].rating_votes + 1)
-  newRating = parseFloat(newRating.toFixed(2))
+  if(product.value){
+    let prod = product.value
 
-  let updatedProduct = product
-  updatedProduct[Object.keys(updatedProduct)].rating = newRating
-  updatedProduct[Object.keys(updatedProduct)].rating_votes = product[Object.keys(product)].rating_votes + 1
+    let newRating: number = (prod[Object.keys(prod)].rating * prod[Object.keys(prod)].rating_votes + parseInt(ratingInfo.ratingVote)) /
+        (prod[Object.keys(prod)].rating_votes + 1)
+    newRating = parseFloat(newRating.toFixed(2))
 
-  if(reviewText){
-    let reviewObj = {text: ratingInfo.reviewText, username: currentUserName, date: formattedDate}
-    updatedProduct[Object.keys(updatedProduct)].reviews.push(reviewObj)
+    let updatedProduct = prod
+    updatedProduct[Object.keys(updatedProduct)].rating = newRating
+    updatedProduct[Object.keys(updatedProduct)].rating_votes = prod[Object.keys(prod)].rating_votes + 1
+
+    if(reviewText){
+      let reviewObj = {text: ratingInfo.reviewText, username: currentUserName, date: formattedDate, userId: AuthStore.email}
+      updatedProduct[Object.keys(updatedProduct)].reviews.push(reviewObj)
+    }
+    /* there will be sending updated product to server (with new user review) */
+    try {
+      await updateInDatabase(CATALOG_DATABASE + route.params.id, updatedProduct)
+    }catch (e) {
+      UiStore.setErrorMessage(e.message)
+    }
   }
-  /* there will be sending updated product to server (with new user review) */
+
 }
 
 /* to decrase qty according to pushing "-" button by user*/
