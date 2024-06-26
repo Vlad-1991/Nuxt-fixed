@@ -6,6 +6,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     await AuthStore.prepareToken()
     let authorized = AuthStore.getToken
     if (authorized) {
-        return navigateTo('/index')
+        return navigateTo({name: 'index'})
     }
 })

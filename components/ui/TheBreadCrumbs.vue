@@ -18,6 +18,7 @@ const route = useRoute()
 import type {Ref} from "vue";
 import type {RouteLocationNormalized} from "vue-router";
 import type {categoriesType} from "@/utils/types/requestTypes";
+import {CATALOG_DATABASE} from "~/utils/composables/constants";
 
 const cur_prod = ref({
   name: '',
@@ -136,27 +137,21 @@ function generateBreadcrumbs(route: RouteLocationNormalized, cur_prod: Ref<{ nam
 async function getProductDetails(id: string | string[]): Promise<void> {
 
   try {
-    const {data, error} = await load('catalog', '/catalog.json')
+    const {data, error} = await load('catalog', CATALOG_DATABASE)
 
 
-    const res = data.value.filter((val: productWithId) => Object.keys(val)[0] === id)
+    const res = data.value.filter((val: productWithId) => val.id === id)
     let product = res[0]
     if (product) {
-      cur_prod.value.name = product[Object.keys(product)].name
-      cur_prod.value.caturl = product[Object.keys(product)].category
-      cur_prod.value.subcaturl = product[Object.keys(product)].subcategory
+      cur_prod.value.name = product.name
+      cur_prod.value.caturl = product.category
+      cur_prod.value.subcaturl = product.subcategory
     }
     // breadcrumbs.value = generateBreadcrumbs(route, cur_prod, categories)
   }catch (e: string | unknown){
     UiStore.setErrorMessage(e.message)
   }
 }
-
-// const handleLink = (link: string) => {
-//   if(link.indexOf('subcategory') !== -1){
-//     UiStore.toShowProductsInCategory(link)
-//   }
-// }
 
 let categories = UiStore.getAllCategories
 
