@@ -51,7 +51,8 @@ import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import type {productWithId, ratingInfoType, subcategoryType, productInCartType} from "~/utils/types/requestTypes";
 import {useCartStore} from "~/stores/CartStore";
 import {load, updateInDatabase} from "~/services/api/requests";
-import {CATALOG_DATABASE} from "~/utils/composables/constants";
+import {CATALOG_DATABASE, CATEGORIES_DATABASE} from "~/utils/composables/constants";
+
 
 
 definePageMeta({
@@ -64,7 +65,7 @@ const dataLoaded = ref(false)
 onMounted(async () => {
 
   try {
-    const {data} = await load('categories', '/categories.json')
+    const {data} = await load('categories', CATEGORIES_DATABASE)
     categories = data.value
   }catch (e: string | unknown) {
     UiStore.setErrorMessage(e.message)
@@ -72,11 +73,6 @@ onMounted(async () => {
 
   try {
     const {data} = await load('single_product', CATALOG_DATABASE + route.params.id)
-    // console.log(data)
-    //  let products = data
-    // //console.log(products)
-    //  products = products.filter((val: productWithId) => val.id === route.params.id)
-
     product.value = data.value
     await defineReviewSended()
     dataLoaded.value = true
@@ -84,6 +80,18 @@ onMounted(async () => {
   }catch (e: string | unknown){
     UiStore.setErrorMessage(e.message)
   }
+
+
+  useHead({
+    title: product.value.name,
+    meta: [
+      { name: "description", content: product.value.description },
+      { property: "og:description", content: product.value.description },
+      { property: "og:image", content: product.value.image[0].thumbnailURL },
+      { name: "twitter:card", content: product.value.name },
+    ],
+  })
+
 })
 
 const CartStore = useCartStore()
@@ -106,6 +114,9 @@ let categories = [{}]
 
 const categories_info = ref()
 categories_info.value = UiStore.getAllCategories
+
+
+
 
 
 const initAddCart = () => {
@@ -196,18 +207,11 @@ const increase = (): void => {
   }
 }
 
-
-
 /* to find current product category name and subcategory name and put them to UI Store to reuse in breadcrumbs */
 const writeCategoryAndSubcategory = (): void => {
   let categoryInfo = {catUrl: '', subCatUrl: ''}
 
-
-
   if(product.value && categories){
-      // categoryInfo.catUrl = product[Object.keys(product)].category
-      // categoryInfo.subCatUrl = product[Object.keys(product)].subcategory
-   // //
     let prod = product.value
     categoryInfo.catUrl = prod.category
     categoryInfo.subCatUrl = prod.subcategory
@@ -250,23 +254,4 @@ const defineReviewSended = async () => {
 }
 
 
-// try {
-//   const {data} = await load('categories', '/categories.json')
-//   categories = data.value
-// }catch (e: string | unknown) {
-//   UiStore.setErrorMessage(e.message)
-// }
-//
-// try {
-//   const data = await load('single_product', CATALOG_DATABASE + route.params.id)
-//   console.log(data)
-//   //  let products = data
-//   // //console.log(products)
-//   //  products = products.filter((val: productWithId) => val.id === route.params.id)
-//      product.value = data
-//   await defineReviewSended()
-//     writeCategoryAndSubcategory()
-// }catch (e: string | unknown){
-//   UiStore.setErrorMessage(e.message)
-// }
 </script>

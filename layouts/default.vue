@@ -16,8 +16,7 @@ import TheNavbar from "~/components/TheNavbar.vue";
 import TheBreadCrumbs from "~/components/ui/TheBreadCrumbs.vue";
 import ErrorMessage from "~/components/ui/ErrorMessage.vue";
 import TheFooter from "~/components/ui/TheFooter.vue";
-import {load, loadCategoriesToStore} from "~/services/api/requests";
-import type {categoriesType} from "~/utils/types/requestTypes";
+import {loadCategoriesToStore} from "~/services/api/requests";
 
 const UiStore = useUiStore();
 const CartStore = useCartStore();
@@ -39,27 +38,5 @@ async function cartInit() {
 }
 
 loadCategoriesToStore()
-
-// /* loading categories from server and store them to UiStore to reuse in other child component with Left Sidebar */
-// const loadCategoriesToStore = async () => {
-//
-//   try {
-//     const {data} = await load('categories', '/categories.json')
-//
-//     response = data.value
-//     response.sort((a: categoriesType, b: categoriesType) => Object.keys(a)[0] > Object.keys(b)[0] ? 1 : -1);
-//
-//     UiStore.pushCategories(response);
-//
-//   } catch (e: string | unknown) {
-//     UiStore.setErrorMessage(e.message);
-//   }
-// }
-
-
-//let categories = UiStore.getAllCategories;
-
-
-
 
 </script>

@@ -100,8 +100,6 @@ const activateSearch = (query: string) => {
 const categories_info = ref()
 categories_info.value = UiStore.getAllCategories
 
-// console.log(categories_info.value)
-
 /* before page loaded - load products from server */
 
   loading.value = true

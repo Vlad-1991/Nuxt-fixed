@@ -51,7 +51,7 @@ const searchQueryProducts = ref()
 
 const categories_info = ref()
 categories_info.value = UiStore.getAllCategories
-// console.log(categories_info.value)
+
 
   /* to load products from catalog, if query exists - filter products relative to category or subcategory, if sorting parameter exists -
   also sort products by criteria */

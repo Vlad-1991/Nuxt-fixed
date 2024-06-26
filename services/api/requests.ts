@@ -1,7 +1,7 @@
 import { useNuxtApp, useAsyncData } from '#app'
 import requestAxios from "~/services/api/index";
 import type {categoriesType, userDataType} from "~/utils/types/requestTypes";
-import {ORDERS_DATABASE} from "~/utils/composables/constants";
+import {CATEGORIES_DATABASE, ORDERS_DATABASE} from "~/utils/composables/constants";
 import {useUiStore} from "~/stores/UiStore";
 
 export async function load(key: string, url: string): Promise<any>{
@@ -36,7 +36,7 @@ export const loadCategoriesToStore = async () => {
 
     const UiStore = useUiStore()
     try {
-        const {data} = await load('categories', '/categories.json')
+        const {data} = await load('categories', CATEGORIES_DATABASE)
 
         let response = data.value
         response.sort((a: categoriesType, b: categoriesType) => Object.keys(a)[0] > Object.keys(b)[0] ? 1 : -1);
