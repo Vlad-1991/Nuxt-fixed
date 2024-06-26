@@ -1,10 +1,11 @@
-import {useAuthStore} from "@/stores/AuthStore";
-export default defineNuxtRouteMiddleware(async (to, from) => {
-    if(process.client){
-        const AuthStore = useAuthStore()
-        if (AuthStore.isAuthentificated) {
-            return navigateTo({ name: "index" })
-        }
-    }
 
+import router from "#app/plugins/router";
+
+export default defineNuxtRouteMiddleware(async (to, from) => {
+    const AuthStore = useAuthStore()
+    await AuthStore.prepareToken()
+    let authorized = AuthStore.getToken
+    if (authorized) {
+        return navigateTo('/index')
+    }
 })

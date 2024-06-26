@@ -15,12 +15,14 @@ export default defineNuxtRouteMiddleware((to, from) => {
                 replace: true
             });
         }
-    } else if (process.client) {
-        if (AuthStore.isAuthentificated && (to.name === 'signin' || to.name === 'signup' || to.name === 'forgotpassword')) {
-            return navigateTo({
-                name: 'index',
-                replace: true
-            })
-        }
     }
+    // if (process.client) {
+    //
+    //     if (AuthStore.getToken && (to.name === 'signin' || to.name === 'signup' || to.name === 'forgotpassword')) {
+    //         return navigateTo({
+    //             name: 'index',
+    //             replace: true
+    //         })
+    //     }
+    // }
 })

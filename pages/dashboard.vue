@@ -78,10 +78,11 @@ import {validateChecked} from "~/utils/composables/validation";
 import {validateFieldWithIndex} from "~/utils/composables/validation";
 import type {arrInfoType} from "~/utils/types/requestTypes";
 import {loadOrdersById, updateInDatabase} from "~/services/api/requests";
+import {watch} from "vue";
 
 definePageMeta({
   layout: 'default',
-  middleware: 'query-rules'
+  middleware: ['query-rules', 'dashboard']
 })
 
 const router = useRouter()
@@ -102,6 +103,15 @@ onMounted(async () => {
     UiStore.setErrorMessage(e.message)
   }
 
+})
+const authorized = ref()
+await AuthStore.prepareToken()
+ authorized.value = AuthStore.getToken
+
+watch(authorized, async (): Promise<void> => {
+  if (!authorized.value) {
+    await router.push({name: 'signin'})
+  }
 })
 
 const adress: Ref<arrInfoType[]> = ref([

@@ -16,6 +16,9 @@
     div.mt10
       nuxt-link(:to="{path: '/forgotpassword'}" tag="div")
         small.link Forgot Password?
+      //span &nbsp;or
+      nuxt-link.block(:to="{path: '/signup'}" tag="div")
+        small.link Create account
 </template>
 
 <script setup lang="ts">
