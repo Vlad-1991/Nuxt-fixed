@@ -72,9 +72,9 @@ export const useAuthStore = defineStore("AuthStore", {
             if(this.getToken){
                 try{
                     let data = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)
-                    console.log(this.getToken)
+
                     let userData = data.data.value
-                    // console.log(userData)
+
 
                     this.userName = userData.name
                     this.zip = userData.zip

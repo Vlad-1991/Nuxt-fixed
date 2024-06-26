@@ -70,7 +70,7 @@ const loadImg = () => {
 }
 
 const imgError = () => {
-  console.log('Error loading image') // Вивід у консоль для перевірки
+  console.log('Error loading image')
 }
 
 

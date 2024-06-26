@@ -1,6 +1,6 @@
 import axios from "axios";
 import type {AxiosInstance} from "axios"
-import {VUE_APP_FB_URL} from "~/utils/composables/constants";
+import {useAuthStore} from "~/stores/AuthStore";
 
 
 const requestAxios: AxiosInstance = axios.create({
@@ -11,8 +11,9 @@ requestAxios.interceptors.response.use(
     response => response,
     error => {
         const router = useRouter()
+        const AuthStore = useAuthStore()
         if (error.response && error.response.status === 401) {
-            // router.push({name: 'signin'})
+            AuthStore.logout()
         }
         return Promise.reject(error)
     }

@@ -17,7 +17,7 @@ div
 import CategorySide from "~/components/ui/CategorySide.vue";
 import ProductList from "~/components/ProductList.vue";
 import type {Ref} from "vue"
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 import {useUiStore} from "~/stores/UiStore";
 
 const UiStore = useUiStore()
@@ -47,7 +47,7 @@ const loadProductsHome = async (sorting?: string): Promise<void> => {
   loading.value = true
 
   try {
-    const {data, error} = await load('catalog', CATALOG_DATABASE)
+    const {data} = await load('catalog', CATALOG_DATABASE)
     products.value = data.value
     products.value = products.value.filter((val: productWithId) => val.saled >= BESTSELLER_COUNT)
 
@@ -107,7 +107,4 @@ categories_info.value = UiStore.getAllCategories
   await loadProductsHome()
 
   loading.value = false
-
-
-
 </script>

@@ -288,7 +288,7 @@ const checkPromo = () => {
   if (AuthStore.isAuthentificated && promo.value === AuthStore.getPromoCode) {
     promoMessage.value = 'You will receive' + AuthStore.getPromoValue
     promoPrice.value = CartStore.getSummary.toFixed(2) - AuthStore.getPromoDiscount?.toFixed(2)
-    console.log(promoPrice.value)
+
   } else {
     promoMessage.value = ''
     promoPrice.value = 0

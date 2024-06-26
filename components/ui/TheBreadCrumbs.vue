@@ -104,11 +104,11 @@ function generateBreadcrumbs(route: RouteLocationNormalized, cur_prod: Ref<{ nam
 
     return UiStore.getBreadcrumbs
   } else if (route.name === 'product-id' && route.params.id) {
-     console.log('im on route')
+
     categoriesInfo.value.cat = UiStore.getCategory;
     categoriesInfo.value.subcat = UiStore.getSubcategory;
 
-    console.log(UiStore.getCategory)
+
 
     if (categoriesInfo.value.cat && categoriesInfo.value.subcat) {
 

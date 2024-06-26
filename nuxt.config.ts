@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     imports: {
         dirs: ["stores"],
     },
-    // components: true,
+     // components: true,
     components: {
         dirs: [
             '~/components',

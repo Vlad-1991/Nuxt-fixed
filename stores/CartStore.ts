@@ -89,7 +89,7 @@ export const useCartStore = defineStore("CartStore", {
         /* get all products from local storage to Cart Store, this function will call one time, when user open website */
         async getCart(): Promise<void>{
             let cart
-           // console.log(localStorage.getItem("cart"))
+
              const cartItem: string | null = localStorage.getItem("cart");
 
             if (cartItem) {

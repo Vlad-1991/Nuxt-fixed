@@ -30,9 +30,6 @@ let route = useRoute()
 
 let categories = UiStore.getAllCategories
 
-// console.log(categories)
-
- // console.log(props.categories)
 
 const emit = defineEmits(['showBestSellers', 'showCategory', 'showSubCategory'])
 

@@ -53,8 +53,6 @@ import {useCartStore} from "~/stores/CartStore";
 import {load, updateInDatabase} from "~/services/api/requests";
 import {CATALOG_DATABASE, CATEGORIES_DATABASE} from "~/utils/composables/constants";
 
-
-
 definePageMeta({
   layout: 'default',
   middleware: 'query-rules'
@@ -96,7 +94,6 @@ onMounted(async () => {
 
 const CartStore = useCartStore()
 const route = useRoute()
-// console.log(route.params.id)
 const AuthStore = useAuthStore()
 const UiStore = useUiStore()
 const loading = ref(true)
@@ -114,10 +111,6 @@ let categories = [{}]
 
 const categories_info = ref()
 categories_info.value = UiStore.getAllCategories
-
-
-
-
 
 const initAddCart = () => {
   // addCart(product, message_overload, cart_qty, product_added)
@@ -138,8 +131,6 @@ const initAddCart = () => {
 }
 
 const reviewSended = ref<boolean>(false)
-
-
 
 /* to collect user rating, add current date and time, optional review text and send this info to server */
 const sendReview = async (ratingInfo: ratingInfoType): Promise<void> => {
@@ -243,10 +234,7 @@ const defineReviewSended = async () => {
   if(AuthStore.isAuthentificated){
 
     if(product.value){
-      // let prod = product.value
-      //  console.log(product.value.name)
       let reviewIndex = product.value.reviews.findIndex((el) => el.userId === AuthStore.getUserId)
-
       reviewSended.value = reviewIndex !== -1;
     }
   }

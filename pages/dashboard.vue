@@ -192,8 +192,6 @@ const getOrdersByEmailId = async (): Promise<void> => {
   const response = await loadOrdersById(AuthStore.email)
 
   let filteredOrders = response.filter((order: {}) => {
-    console.log(order.email)
-    console.log(AuthStore.email)
     return (order.email === AuthStore.email)
   })
   return filteredOrders

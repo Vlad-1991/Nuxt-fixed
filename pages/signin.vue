@@ -77,7 +77,6 @@ const SignIn = async (): Promise<void> => {
     email: auth.value[0].val,
     password: auth.value[1].val
   }
-  // console.log(authData)
 
   /* there will be sending data to server, if response positive - redirect to catalog page */
   try {
