@@ -1,6 +1,7 @@
 <template lang="pug">
   div
     div(:id="galleryID")
+      div(v-if="loading").loader.img_size
       a(
           v-for="(image, key) in imagesData"
           :key="key"
@@ -9,7 +10,6 @@
           :data-pswp-height="image.height"
           target="_blank"
           rel="noreferrer")
-        div(v-if="loading").loader.img_size
         img#first_image(v-show="!loading" :src="imagesData[0].largeURL" v-if="key === 0" :alt="name" width="500px" height="500px" @error="imgError" @load="loadImg")
 </template>
 

@@ -229,7 +229,7 @@ function toFirstStep(): void {
 
 /* to empty form after order confirmed */
 const resetForm = (): void => {
-  if(!AuthStore.isAuthentificated){
+  if (!AuthStore.isAuthentificated) {
     adress.value.forEach(el => {
       el.val = ''
       el.valid = false
@@ -252,7 +252,7 @@ const createOrder = async (): Promise<void> => {
   let day = currentDate.getDate();
   let month = currentDate.getMonth() + 1;
   let year = currentDate.getFullYear();
-  let formattedDate = (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day  + '-' + year;
+  let formattedDate = (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day + '-' + year;
 
   let order: { [key: string]: (string | boolean | undefined | {}) } = {}
   order["country"] = getKeyByValue(adress.value[0].val)
@@ -271,19 +271,17 @@ const createOrder = async (): Promise<void> => {
     products: products
   }
 
-/* there must be sending order to server*/
-console.log(order)
-  
+
   try {
     await addOrder(ORDERS_DATABASE, order)
-  }catch (e: string | unknown) {
+  } catch (e: string | unknown) {
     UiStore.setErrorMessage(e.message)
   }
 
-resetForm()
-localStorage.removeItem("cart")
-CartStore.clearCart()
-modal.value = true
+  resetForm()
+  localStorage.removeItem("cart")
+  CartStore.clearCart()
+  modal.value = true
 }
 
 const checkPromo = () => {
@@ -297,7 +295,7 @@ const checkPromo = () => {
   }
 }
 
-if(AuthStore.isAuthentificated){
+if (AuthStore.isAuthentificated) {
   validateChecked(adress.value, 0)
   validateFieldWithIndex(adress.value, 1)
   validateFieldWithIndex(adress.value, 2)

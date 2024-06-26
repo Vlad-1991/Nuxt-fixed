@@ -3,39 +3,38 @@
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side(v-if="categories_info" :categories="categories_info" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
-    main.main-side
+    main.main-side(v-if="dataLoaded")
       div(v-if="!showReviews")
         div.product(v-if="product")
-          h1.ml20 {{ product[Object.keys(product)].name }}
-          div.rating Rating {{product[Object.keys(product)].rating}} of {{MAX_RATING}}
-            span.reviews(@click="showReviews = true") {{product[Object.keys(product)].reviews.length}} Reviews
+          h1.ml20 {{ product.name }}
+          div.rating Rating {{product.rating}} of {{MAX_RATING}}
+            span.reviews(@click="showReviews = true") {{product.reviews.length}} Reviews
           div.image_card
             div
-              //div(v-if="loading").loader
-              SimpleGallery#gallery( galleryID="my-test-gallery-primary" :images="product[Object.keys(product)].image" class="card-image"
-                :name="product[Object.keys(product)].name")
+              SimpleGallery#gallery( galleryID="my-test-gallery-primary" :images="product.image" class="card-image"
+                :name="product.name")
             div.flex-box
-              h2.price ${{product[Object.keys(product)].price}}
+              h2.price ${{product.price}}
               div
                 button.btn_cart(@click="decrease" type="button") -
                 input.btn_cart_input(type="number" min="1" max="100" step="1" pattern="[0-9]{3}" v-model="cart_qty" @input="onInput($event.target.value)")
                 button.btn_cart(@click="increase" type="button") +
               span
                 button.btn.danger.add_to_cart(@click="initAddCart" type="button") Add to Cart
-                h3.inline-block.price_sum(v-if="cart_qty > 1") Summary: ${{(cart_qty * parseFloat(product[Object.keys(product)].price)).toFixed(2)}}
+                h3.inline-block.price_sum(v-if="cart_qty > 1") Summary: ${{(cart_qty * parseFloat(product.price)).toFixed(2)}}
                 h3.inline-block(v-if="message_overload") Max count of this position is 100
                 h3.primary.inline-block(v-if="product_added") Product added to Cart
                 button.btn.orange.add_to_cart.block.mt20(@click="modal = true" type="button") Buy Now
-          div.description(v-html="product[Object.keys(product)].description")
+          div.description(v-html="product.description")
         div.ml20.center(v-else)
           h1 There are no this product
           nuxtLink.link(:to="{name: 'catalog'}") Back to Catalog
       div.reviews-block(v-else)
-        Reviews(v-if="product" :is-authentificated="AuthStore.isAuthentificated" :reviews="product[Object.keys(product)].reviews" :reviewSended="reviewSended"
+        Reviews(v-if="product" :is-authentificated="AuthStore.isAuthentificated" :reviews="product.reviews" :reviewSended="reviewSended"
         @sendReview="sendReview" @backToProduct="showReviews = false")
 
     teleport(to="body")
-      modal-quick-order(v-if="modal" title="Quick Order" @close="modal = false" :product="product[Object.keys(product)]" :qty="cart_qty")
+      modal-quick-order(v-if="modal" title="Quick Order" @close="modal = false" :product="product" :qty="cart_qty")
 </template>
 
 <script setup lang="ts">
@@ -52,12 +51,39 @@ import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import type {productWithId, ratingInfoType, subcategoryType, productInCartType} from "~/utils/types/requestTypes";
 import {useCartStore} from "~/stores/CartStore";
 import {load, updateInDatabase} from "~/services/api/requests";
-import {CATALOG_DATABASE, ORDERS_DATABASE} from "~/utils/composables/constants";
+import {CATALOG_DATABASE} from "~/utils/composables/constants";
 
 
 definePageMeta({
   layout: 'default',
   middleware: 'query-rules'
+})
+
+const dataLoaded = ref(false)
+
+onMounted(async () => {
+
+  try {
+    const {data} = await load('categories', '/categories.json')
+    categories = data.value
+  }catch (e: string | unknown) {
+    UiStore.setErrorMessage(e.message)
+  }
+
+  try {
+    const {data} = await load('single_product', CATALOG_DATABASE + route.params.id)
+    // console.log(data)
+    //  let products = data
+    // //console.log(products)
+    //  products = products.filter((val: productWithId) => val.id === route.params.id)
+
+    product.value = data.value
+    await defineReviewSended()
+    dataLoaded.value = true
+    writeCategoryAndSubcategory()
+  }catch (e: string | unknown){
+    UiStore.setErrorMessage(e.message)
+  }
 })
 
 const CartStore = useCartStore()
@@ -75,19 +101,16 @@ const MAX_RATING = 5
 
 const showReviews = ref<boolean>(false)
 const reviewText = ref<string>()
-const product = ref<productInCartType>()
+const product = ref<productWithId>()
 let categories = [{}]
 
 const categories_info = ref()
 categories_info.value = UiStore.getAllCategories
 
-// console.log(UiStore.getAllCategories)
-
-
 
 const initAddCart = () => {
   // addCart(product, message_overload, cart_qty, product_added)
-  let resp = CartStore.addToCart(product, cart_qty.value)
+  let resp = CartStore.addToCart(product.value, cart_qty.value)
   if(resp === 'success'){
     cart_qty.value = 1
     product_added.value = true
@@ -108,7 +131,7 @@ const reviewSended = ref<boolean>(false)
 
 
 /* to collect user rating, add current date and time, optional review text and send this info to server */
-const sendReview = async (ratingInfo: ratingInfoType): void => {
+const sendReview = async (ratingInfo: ratingInfoType): Promise<void> => {
 
   let currentUserName = AuthStore.getUserName
   let currentUserId = AuthStore.getUserId
@@ -122,18 +145,19 @@ const sendReview = async (ratingInfo: ratingInfoType): void => {
   if(product.value){
     let prod = product.value
 
-    let newRating: number = (prod[Object.keys(prod)].rating * prod[Object.keys(prod)].rating_votes + parseInt(ratingInfo.ratingVote)) /
-        (prod[Object.keys(prod)].rating_votes + 1)
+    let newRating: number = (prod.rating * prod.rating_votes + parseInt(ratingInfo.ratingVote)) /
+        (prod.rating_votes + 1)
     newRating = parseFloat(newRating.toFixed(2))
 
     let updatedProduct = prod
-    updatedProduct[Object.keys(updatedProduct)].rating = newRating
-    updatedProduct[Object.keys(updatedProduct)].rating_votes = prod[Object.keys(prod)].rating_votes + 1
+    updatedProduct.rating = newRating
+    updatedProduct.rating_votes = prod.rating_votes + 1
 
-    if(reviewText){
-      let reviewObj = {text: ratingInfo.reviewText, username: currentUserName, date: formattedDate, userId: AuthStore.email}
-      updatedProduct[Object.keys(updatedProduct)].reviews.push(reviewObj)
-    }
+
+      let reviewObj = {text: ratingInfo.reviewText ? ratingInfo.reviewText : '', username: currentUserName, date: formattedDate, userId: AuthStore.email}
+      updatedProduct.reviews.push(reviewObj)
+
+
     /* there will be sending updated product to server (with new user review) */
     try {
       await updateInDatabase(CATALOG_DATABASE + route.params.id, updatedProduct)
@@ -180,13 +204,13 @@ const writeCategoryAndSubcategory = (): void => {
 
 
 
-  if(product && categories){
+  if(product.value && categories){
       // categoryInfo.catUrl = product[Object.keys(product)].category
       // categoryInfo.subCatUrl = product[Object.keys(product)].subcategory
    // //
     let prod = product.value
-    categoryInfo.catUrl = prod[Object.keys(prod)].category
-    categoryInfo.subCatUrl = prod[Object.keys(prod)].subcategory
+    categoryInfo.catUrl = prod.category
+    categoryInfo.subCatUrl = prod.subcategory
 
 
     let current_category
@@ -209,43 +233,40 @@ const writeCategoryAndSubcategory = (): void => {
   }
 }
 
+const defineReviewSended = async () => {
+  await AuthStore.prepareToken()
+  await AuthStore.setUserInfo()
+  if(AuthStore.isAuthentificated){
+
+    if(product.value){
+      // let prod = product.value
+      //  console.log(product.value.name)
+      let reviewIndex = product.value.reviews.findIndex((el) => el.userId === AuthStore.getUserId)
+
+      reviewSended.value = reviewIndex !== -1;
+    }
+  }
+
+}
 
 
-// /* when image loaded - remove loader from product page */
-// const toChangeLoader = () : void => {
-//   loading.value = false
+// try {
+//   const {data} = await load('categories', '/categories.json')
+//   categories = data.value
+// }catch (e: string | unknown) {
+//   UiStore.setErrorMessage(e.message)
 // }
-
-try {
-  const {data, error} = await load('categories', '/categories.json')
-  categories = data.value
-}catch (e: string | unknown) {
-  UiStore.setErrorMessage(e.message)
-}
-
-try {
-  const {data, error} = await load('catalog', '/catalog.json')
-  let products = data.value
-  // console.log(products)
-  products = products.filter((val: productWithId) => Object.keys(val)[0] === route.params.id)
-  if(products[0]){
-    product.value = products[0]
-    writeCategoryAndSubcategory()
-  }
-
-
-}catch (e: string | unknown){
-  UiStore.setErrorMessage(e.message)
-}
-
-if(AuthStore.isAuthentificated){
-
-
-  if(product){
-    let prod = product.value
-    let reviewIndex = prod[Object.keys(prod)].reviews.findIndex(el => el.userId === AuthStore.getUserId)
-    reviewSended.value = reviewIndex !== -1;
-  }
-}
-
+//
+// try {
+//   const data = await load('single_product', CATALOG_DATABASE + route.params.id)
+//   console.log(data)
+//   //  let products = data
+//   // //console.log(products)
+//   //  products = products.filter((val: productWithId) => val.id === route.params.id)
+//      product.value = data
+//   await defineReviewSended()
+//     writeCategoryAndSubcategory()
+// }catch (e: string | unknown){
+//   UiStore.setErrorMessage(e.message)
+// }
 </script>

@@ -69,25 +69,27 @@ export const useAuthStore = defineStore("AuthStore", {
 
         async setUserInfo(): Promise<void> {
 
+            if(this.getToken){
+                try{
+                    let data = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)
+                    console.log(this.getToken)
+                    let userData = data.data.value
+                    // console.log(userData)
 
-            try{
-                let data = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)
-                console.log(this.getToken)
-                let userData = data.data.value
-                // console.log(userData)
-
-                this.userName = userData.name
-                this.zip = userData.zip
-                this.email = userData.email
-                this.country = userData.country
-                this.adress = userData.address
-                this.phone = userData.phone
-                this.orders = userData.orders
-                this.promo = userData.promo
-            }catch (e: string | unknown) {
-                const UiStore = useUiStore()
-                UiStore.setErrorMessage(e.message);
+                    this.userName = userData.name
+                    this.zip = userData.zip
+                    this.email = userData.email
+                    this.country = userData.country
+                    this.adress = userData.address
+                    this.phone = userData.phone
+                    this.orders = userData.orders
+                    this.promo = userData.promo
+                }catch (e: string | unknown) {
+                    const UiStore = useUiStore()
+                    UiStore.setErrorMessage(e.message);
+                }
             }
+
 
         },
         async updateUserinfo(country: string, adress: string, zip: string, phone: string): Promise<void> {

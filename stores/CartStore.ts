@@ -1,5 +1,5 @@
 
-import type {productInCartType} from "@/utils/types/requestTypes";
+import type {productInCartType, productWithId} from "@/utils/types/requestTypes";
 import type {CartState} from "@/utils/types/storeTypes";
 
 export const useCartStore = defineStore("CartStore", {
@@ -35,10 +35,10 @@ export const useCartStore = defineStore("CartStore", {
     actions: {
         /* add to store product, added to cart, and add this product to local storage
         if qty > 100 nothing will be added, this is limit per order of logic this online store */
-        addToCart(product: productInCartType, qty: number): string {
+        addToCart(product: productWithId, qty: number): string {
 
-           let prod = product.value
-            let key = prod[Object.keys(prod)].id
+           let prod = product
+            let key = prod.id
             let cur_product = this.getProductById(key)
             let prod_in_cart: productInCartType = {}
 
@@ -46,26 +46,23 @@ export const useCartStore = defineStore("CartStore", {
                 return 'overloaded'
             } else {
                 prod_in_cart[key] = {
-                    // @ts-ignore
-                    id: prod[Object.keys(prod)].id,
+                    id: prod.id,
                     qty: qty,
-                    // @ts-ignore
-                    name: prod[Object.keys(prod)].name,
-                    // @ts-ignore
-                    price: prod[Object.keys(prod)].price
+                    name: prod.name,
+                    price: prod.price
                 }
 
-                let cart_key = prod_in_cart[Object.keys(prod)[0]].id;
+                let cart_key = prod_in_cart[prod.id].id;
 
                 if (this.cart[cart_key]) {
 
-                    this.cart[cart_key].qty += prod_in_cart[Object.keys(prod)[0]].qty
+                    this.cart[cart_key].qty += prod_in_cart[prod.id].qty
 
                     if (this.cart[cart_key].qty > 100) {
                         this.cart[cart_key].qty = 100
                     }
                 } else {
-                    this.cart[cart_key] = prod_in_cart[Object.keys(prod)[0]];
+                    this.cart[cart_key] = prod_in_cart[prod.id];
                 }
 
                 localStorage.setItem("cart", JSON.stringify(this.cart))
@@ -90,11 +87,11 @@ export const useCartStore = defineStore("CartStore", {
             localStorage.setItem("cart", JSON.stringify(this.cart))
         },
         /* get all products from local storage to Cart Store, this function will call one time, when user open website */
-        getCart(): void{
+        async getCart(): Promise<void>{
             let cart
-            console.log(localStorage.getItem("cart"))
+           // console.log(localStorage.getItem("cart"))
              const cartItem: string | null = localStorage.getItem("cart");
-             //const cartItem: string | null = null
+
             if (cartItem) {
                 cart = JSON.parse(cartItem);
             }

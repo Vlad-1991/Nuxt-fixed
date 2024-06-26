@@ -39,7 +39,6 @@ export interface productType {
 }
 
 export interface productWithId {
-    [key: string] : {
         category: string,
         description: string,
         id: string,
@@ -59,7 +58,6 @@ export interface productWithId {
         }],
         saled: number,
         subcategory: string
-    }
 }
 
 export interface fieldType {

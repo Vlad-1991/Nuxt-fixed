@@ -28,16 +28,13 @@ import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import {load} from "~/services/api/requests";
 import type {productWithId} from "~/utils/types/requestTypes";
 import {filterSearchedProducts} from "~/utils/composables/search";
-import {BESTSELLER_COUNT} from "~/utils/composables/constants";
+import {BESTSELLER_COUNT, CATALOG_DATABASE} from "~/utils/composables/constants";
 
 definePageMeta({
   layout: 'default',
   middleware: 'query-rules'
 })
 
-
-
-// console.log(categories_info.value)
 
 const products: Ref<productWithId[]> = ref([]);
 const loading = ref(false)
@@ -50,36 +47,36 @@ const loadProductsHome = async (sorting?: string): Promise<void> => {
   loading.value = true
 
   try {
-    const {data, error} = await load('catalog', '/catalog.json')
+    const {data, error} = await load('catalog', CATALOG_DATABASE)
     products.value = data.value
-    products.value = products.value.filter((val: productWithId) => val[Object.keys(val)[0]].saled >= BESTSELLER_COUNT)
+    products.value = products.value.filter((val: productWithId) => val.saled >= BESTSELLER_COUNT)
 
     if (sorting) {
       switch (sorting) {
 
         case 'sortAZ':
-          products.value.sort((a: productWithId, b: productWithId) => a[Object.keys(a)[0]].name.localeCompare(b[Object.keys(b)[0]].name));
+          products.value.sort((a: productWithId, b: productWithId) => a.name.localeCompare(b.name));
           loading.value = false
           searchQueryProducts.value = products.value
           filterSearchedProducts(searchQuery.value, searchQuery, products, searchQueryProducts)
           break
 
         case 'sortBestsellers':
-          products.value.sort((a: productWithId, b: productWithId) => b[Object.keys(b)[0]].saled - a[Object.keys(a)[0]].saled);
+          products.value.sort((a: productWithId, b: productWithId) => b.saled - a.saled);
           loading.value = false
           searchQueryProducts.value = products.value
           filterSearchedProducts(searchQuery.value, searchQuery, products, searchQueryProducts)
           break
 
         case 'sortPriceLowToHigh':
-          products.value.sort((a: productWithId, b: productWithId) => parseFloat(a[Object.keys(a)[0]].price) - parseFloat(b[Object.keys(b)[0]].price));
+          products.value.sort((a: productWithId, b: productWithId) => parseFloat(a.price) - parseFloat(b.price));
           loading.value = false
           searchQueryProducts.value = products.value
           filterSearchedProducts(searchQuery.value, searchQuery, products, searchQueryProducts)
           break
 
         case 'sortPriceHighToLow':
-          products.value.sort((a: productWithId, b: productWithId) => parseFloat(b[Object.keys(b)[0]].price) - parseFloat(a[Object.keys(a)[0]].price));
+          products.value.sort((a: productWithId, b: productWithId) => parseFloat(b.price) - parseFloat(a.price));
           loading.value = false
           searchQueryProducts.value = products.value
           filterSearchedProducts(searchQuery.value, searchQuery, products, searchQueryProducts)

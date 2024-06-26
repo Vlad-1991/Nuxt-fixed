@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div(v-if="products")
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
@@ -30,15 +30,24 @@ import {useCartStore} from "~/stores/CartStore";
 import CategorySide from "~/components/ui/CategorySide.vue";
 import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import type {productInCartType} from "~/utils/types/requestTypes";
+import {loadCategoriesToStore} from "~/services/api/requests";
 
 definePageMeta({
   layout: 'default',
   middleware: 'query-rules'
 })
+
+const products = ref<productInCartType | null[]>()
 const CartStore = useCartStore()
 const UiStore = useUiStore()
 
-let products: productInCartType | null = CartStore.getCartProducts
+onMounted(async () => {
+
+  await loadCategoriesToStore()
+  await CartStore.getCart()
+   products.value = CartStore.getCartProducts
+})
+
 
 
 /* to change qty of product in Cart, have a basic qty validation, valid qty 1 - 100 */

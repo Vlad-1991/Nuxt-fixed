@@ -162,11 +162,14 @@ let validateSettings = computed((): boolean => {
 })
 
 const updateUserOnServer = async () => {
+  if(adress.value[0].val){
     await AuthStore.updateUserinfo(getKeyByValue(adress.value[0].val), adress.value[1].val, adress.value[2].val, adress.value[3].val)
     updated.value = true
     setTimeout(() => {
       updated.value = false
     }, 3000)
+  }
+
 }
 
 function getKeyByValue(value: string) {
@@ -196,15 +199,6 @@ const cancelOrder = async (id: number, order: {}): Promise<void> => {
     UiStore.setErrorMessage(e.message)
   }
 }
-
-// try {
-//   orders.value = await getOrdersByEmailId()
-// }catch (e: string | unknown) {
-//   UiStore.setErrorMessage(e.message)
-// }
-//
-
-
 
 
 </script>
