@@ -21,4 +21,14 @@ definePageMeta({
   layout: 'default',
   middleware: ['query-rules']
 })
+
+useHead({
+  title: 'About us',
+  meta: [
+    { name: "description", content: 'About us' },
+    { property: "og:description", content: 'About us' },
+    { name: "twitter:card", content: 'About us' },
+  ],
+})
+
 </script>

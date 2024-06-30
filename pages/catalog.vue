@@ -32,6 +32,13 @@ import {BESTSELLER_COUNT, CATALOG_DATABASE} from "~/utils/composables/constants"
 definePageMeta({
   layout: 'default'
 })
+useHead({
+  meta: [
+    { name: "description", content: 'Catalog' },
+    { property: "og:description", content: 'Catalog' },
+    { name: "twitter:card", content: 'Catalog' },
+  ],
+})
 const UiStore = useUiStore()
 
 let route = useRoute()

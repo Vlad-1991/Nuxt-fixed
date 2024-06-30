@@ -35,6 +35,14 @@ definePageMeta({
   middleware: 'query-rules'
 })
 
+useHead({
+  meta: [
+    { name: "description", content: 'Home page' },
+    { property: "og:description", content: 'Home page' },
+    { name: "twitter:card", content: 'Home page' },
+  ],
+})
+
 
 const products: Ref<productWithId[]> = ref([]);
 const loading = ref(false)

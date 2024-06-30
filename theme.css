@@ -21,7 +21,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     color: var(--main-grey);
-    background: var(--main-lightblue);
+    background: white;
     /*background: #2c3e50;*/
     margin: 0;
 }
@@ -174,6 +174,7 @@ h3 {
     margin-bottom: 200px;
     width: 100%;
     min-height: 100vh;
+    padding: 0 var(--offset);
     /*border: 1px solid red;*/
 
 }
@@ -183,6 +184,7 @@ h3 {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: var(--main-lightblue);
 }
 
 .auth {
@@ -448,7 +450,7 @@ h3 {
 
 .navbar {
     display: flex;
-    padding: 0 2rem;
+    padding: 0 calc(2 * var(--offset));
     justify-content: space-between;
     align-items: center;
     position: fixed;
@@ -661,27 +663,26 @@ h3 {
     display: flex;
     flex-direction: column;
     row-gap: 20px;
-    position: absolute;
+    position: relative;
     width: 100%;
     background: var(--main-lightblue);
     bottom: 0;
     left: 0;
     justify-content: center;
     align-items: center;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 100px var(--offset);
     box-sizing: border-box;
-    z-index: 100;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    z-index: 1;
 }
 
 .wrapper {
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+    /*padding: 0 var(--offset);*/
+    padding: 0;
     background-color: white;
+    border: 1px solid red;
     /*background: #2c3e50;*/
 }
 
