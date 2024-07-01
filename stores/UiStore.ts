@@ -1,7 +1,3 @@
-
-import type {breadcrumbsArrayType} from "@/utils/types/requestTypes";
-import type {UiState} from "@/utils/types/storeTypes";
-
 /* in this store saved all states of UI elements */
 export const useUiStore = defineStore("UiStore", {
     state: (): UiState => {

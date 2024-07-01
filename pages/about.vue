@@ -9,12 +9,7 @@
 
 <!-- Component About Us - contains general info about Online Store (to add more details in future) -->
 <script setup lang="ts">
-import {useRoute} from "vue-router";
 const route = useRoute()
-import {useUiStore} from "~/stores/UiStore";
-import CategorySide from "~/components/ui/CategorySide.vue";
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
-
 
 const UiStore = useUiStore()
 definePageMeta({

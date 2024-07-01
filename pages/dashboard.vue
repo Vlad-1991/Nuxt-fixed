@@ -68,17 +68,7 @@
 </template>
 
 <script setup lang="ts">
-
-import {useUiStore} from "~/stores/UiStore"
-import {useAuthStore} from "~/stores/AuthStore"
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue"
-import CategorySide from "~/components/ui/CategorySide.vue"
-import {classesMap, COUNTRIES, ORDERS_DATABASE} from "../utils/composables/constants"
-import {validateChecked} from "~/utils/composables/validation";
-import {validateFieldWithIndex} from "~/utils/composables/validation";
-import type {arrInfoType} from "~/utils/types/requestTypes";
 import {loadOrdersById, updateInDatabase} from "~/services/api/requests";
-import {watch} from "vue";
 
 definePageMeta({
   layout: 'default',
@@ -207,6 +197,4 @@ const cancelOrder = async (id: number, order: {}): Promise<void> => {
     UiStore.setErrorMessage(e.message)
   }
 }
-
-
 </script>

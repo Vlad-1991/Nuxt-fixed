@@ -15,15 +15,7 @@
 
 <!-- component renders form to collect email and send request to server (must be realized with back-end) -->
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import type {Ref} from "vue"
-import {useUiStore} from "~/stores/UiStore";
-import AppModal from "~/components/ui/AppModal.vue";
-import type {arrInfoType} from "~/utils/types/requestTypes";
-import {validateFieldWithIndex} from "~/utils/composables/validation";
-import {useAuthStore} from "~/stores/AuthStore";
 const AuthStore = useAuthStore()
-
 const router = useRouter()
 
 definePageMeta({

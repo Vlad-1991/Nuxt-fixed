@@ -1,5 +1,3 @@
-import type {breadcrumbsArrayType, productInCartType} from "@/utils/types/requestTypes";
-
 export type CartState = { cart: productInCartType }
 
 export interface authType {

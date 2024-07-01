@@ -10,14 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCartStore } from "~/stores/CartStore";
-import { useUiStore } from "~/stores/UiStore";
-import TheNavbar from "~/components/TheNavbar.vue";
-import TheBreadCrumbs from "~/components/ui/TheBreadCrumbs.vue";
-import ErrorMessage from "~/components/ui/ErrorMessage.vue";
-import TheFooter from "~/components/ui/TheFooter.vue";
 import {loadCategoriesToStore} from "~/services/api/requests";
-
 const UiStore = useUiStore();
 const CartStore = useCartStore();
 const AuthStore = useAuthStore()
@@ -34,7 +27,7 @@ let response;
 
 /* to get all products, putted by user to cart earlier, from local storage to Cart store */
 async function cartInit() {
-  CartStore.getCart();
+  await CartStore.getCart();
 }
 
 loadCategoriesToStore()

@@ -9,10 +9,7 @@
 
 <!-- Component Help - contains useful topics about Online Store handling (to add more details in future) -->
 <script setup lang="ts">
-import {useUiStore} from "~/stores/UiStore";
 const UiStore = useUiStore()
-import CategorySide from "~/components/ui/CategorySide.vue";
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 
 definePageMeta({
   layout: 'default',

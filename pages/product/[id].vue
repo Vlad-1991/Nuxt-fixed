@@ -38,20 +38,7 @@
 </template>
 
 <script setup lang="ts">
-
-import {useAuthStore} from "~/stores/AuthStore";
-import {onMounted, ref} from "vue";
-import {useRoute} from "vue-router";
-import SimpleGallery from '~/components/ui/SimpleGallery.vue';
-import {useUiStore} from "~/stores/UiStore";
-import CategorySide from "~/components/ui/CategorySide.vue";
-import ModalQuickOrder from "~/components/ui/ModalQuickOrder.vue";
-import Reviews from "~/components/ui/Reviews.vue";
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
-import type {productWithId, ratingInfoType, subcategoryType, productInCartType} from "~/utils/types/requestTypes";
-import {useCartStore} from "~/stores/CartStore";
 import {load, updateInDatabase} from "~/services/api/requests";
-import {CATALOG_DATABASE, CATEGORIES_DATABASE} from "~/utils/composables/constants";
 
 definePageMeta({
   layout: 'default',
@@ -113,7 +100,6 @@ const categories_info = ref()
 categories_info.value = UiStore.getAllCategories
 
 const initAddCart = () => {
-  // addCart(product, message_overload, cart_qty, product_added)
   let resp = CartStore.addToCart(product.value, cart_qty.value)
   if(resp === 'success'){
     cart_qty.value = 1
@@ -240,6 +226,4 @@ const defineReviewSended = async () => {
   }
 
 }
-
-
 </script>

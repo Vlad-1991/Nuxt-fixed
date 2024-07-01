@@ -29,15 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, type Ref} from "vue"
-import {computed, ref} from "vue";
 const router = useRouter()
-import {useUiStore} from "~/stores/UiStore";
-import type {arrInfoType} from "~/utils/types/requestTypes";
 const UiStore = useUiStore()
-import {validateFieldWithIndex, checkAllFields} from "~/utils/composables/validation";
-import AppModal from "~/components/ui/AppModal.vue";
-import {useAuthStore} from "~/stores/AuthStore";
 const modal = ref(false)
 const AuthStore = useAuthStore()
 

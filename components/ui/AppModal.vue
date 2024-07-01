@@ -10,9 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
 const router = useRouter();
-
 const emit = defineEmits(['close'])
 const props = defineProps<{title: string}>()
 

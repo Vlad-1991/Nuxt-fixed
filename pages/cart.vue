@@ -25,11 +25,6 @@
 
 <!-- component of Cart, contains table with added products, names, qty, price, delete button and summary, also has button - go to checkout -->
 <script setup lang="ts">
-import {useUiStore} from "~/stores/UiStore";
-import {useCartStore} from "~/stores/CartStore";
-import CategorySide from "~/components/ui/CategorySide.vue";
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
-import type {productInCartType} from "~/utils/types/requestTypes";
 import {loadCategoriesToStore} from "~/services/api/requests";
 
 definePageMeta({

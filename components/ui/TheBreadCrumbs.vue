@@ -8,17 +8,9 @@
 <!-- simple component to render row of breadcrumbs from current route
 , which contains links to all levels of route -->
 <script setup lang="ts">
-import type {breadcrumbsArrayType, productWithId} from "@/utils/types/requestTypes";
-import {useUiStore} from "@/stores/UiStore";
-import {computed, ref, watch} from "vue";
-import {useRoute} from "vue-router";
 import {load} from "@/services/api/requests";
 const UiStore = useUiStore()
 const route = useRoute()
-import type {Ref} from "vue";
-import type {RouteLocationNormalized} from "vue-router";
-import type {categoriesType} from "@/utils/types/requestTypes";
-import {CATALOG_DATABASE} from "~/utils/composables/constants";
 
 const cur_prod = ref({
   name: '',
@@ -26,18 +18,15 @@ const cur_prod = ref({
   subcaturl: ''
 })
 
-
-
-
 /* it route selected by http query has params, information about this product store in variables to be shown in breadcrumbs  */
 if (route.params.id) {
   await getProductDetails(route.params.id)
 }
 
 /* if go to product details must be gathered for breadcrumbs */
-watch(route, async (): Promise<void> => {
-  if (route.params.id) {
-    await getProductDetails(route.params.id)
+watch(() => route.params.id, async (newId) => {
+  if (newId) {
+    await getProductDetails(newId)
   }
 })
 
@@ -107,8 +96,6 @@ function generateBreadcrumbs(route: RouteLocationNormalized, cur_prod: Ref<{ nam
 
     categoriesInfo.value.cat = UiStore.getCategory;
     categoriesInfo.value.subcat = UiStore.getSubcategory;
-
-
 
     if (categoriesInfo.value.cat && categoriesInfo.value.subcat) {
 

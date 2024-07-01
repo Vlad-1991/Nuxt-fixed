@@ -1,6 +1,3 @@
-import type {arrInfoType, fieldType} from "@/utils/types/requestTypes";
-import {COUNTRIES} from "~/utils/composables/constants";
-
 /* validation of any text, phone input field, field cant be empty and must be valid by own RegExp pattern.
  If field activated once, then validation will be present */
 export const validateField = (field: fieldType): void => {

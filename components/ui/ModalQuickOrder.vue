@@ -25,10 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-import type {productType} from "@/utils/types/requestTypes";
-import {validateField} from "@/utils/composables/validation"
-
 const orderSended = ref(false)
 
 const emit = defineEmits(['close'])

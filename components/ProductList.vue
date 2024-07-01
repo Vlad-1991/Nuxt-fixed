@@ -15,6 +15,5 @@
 <!-- this component renders all products, selected in upper component (Catalog, Home), can be sorted and filtered in upper component
  products have a visual box with name of product, main thumb image, price and button to "read more" -->
 <script setup lang="ts">
-import type {productType} from "@/utils/types/requestTypes";
 const props = defineProps<{products?: [productType]}>()
 </script>

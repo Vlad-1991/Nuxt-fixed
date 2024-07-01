@@ -32,8 +32,6 @@
 <!-- this is navbar - rendered once on main layout to navigate to all routes, except checkout and specific category query
  have also log in, sign in, log out buttons -->
 <script setup lang="ts">
-import {useCartStore} from "@/stores/CartStore";
-import {useAuthStore} from "@/stores/AuthStore";
 const AuthStore = useAuthStore()
 const CartStore = useCartStore()
 </script>

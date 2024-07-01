@@ -1,7 +1,3 @@
-
-import type {productInCartType, productWithId} from "@/utils/types/requestTypes";
-import type {CartState} from "@/utils/types/storeTypes";
-
 export const useCartStore = defineStore("CartStore", {
     state: (): CartState => {
         return {

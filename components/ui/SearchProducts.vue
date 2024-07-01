@@ -6,7 +6,6 @@
 
 <!-- component with 1 text input, emit event to upper component to filter products from server by searched value. -->
 <script setup lang="ts">
-import {ref} from "vue";
 const searchQuery = ref()
 const emit = defineEmits(['changedSearch'])
 </script>

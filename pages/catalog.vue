@@ -13,21 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import type {catType, productWithId, subcatType} from "~/utils/types/requestTypes";
-import ProductList from "~/components/ProductList.vue";
-import {useRoute} from "vue-router";
-import {useRouter} from "vue-router";
-import {ref, watch} from "vue";
-import {useUiStore} from "~/stores/UiStore";
-
-import CategorySide from "~/components/ui/CategorySide.vue";
-import SortingSelector from "~/components/ui/SortingSelector.vue";
-import SearchProducts from "~/components/ui/SearchProducts.vue";
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import {load} from "~/services/api/requests";
-import {filterSearchedProducts} from "~/utils/composables/search";
-import {BESTSELLER_COUNT, CATALOG_DATABASE} from "~/utils/composables/constants";
-
 
 definePageMeta({
   layout: 'default'
@@ -47,8 +33,6 @@ let router = useRouter()
 const products = ref()
 const all_products = ref([])
 let categories
-
-const showBestseller = ref<boolean>(false) // value of checkbox bestseller
 const checkboxBestSeller = ref<boolean>(false) // show checkbox on left sidebar
 
 const loading = ref(false)

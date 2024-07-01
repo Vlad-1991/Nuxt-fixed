@@ -12,12 +12,17 @@ export default defineNuxtConfig({
     imports: {
         dirs: ["stores"],
     },
-     // components: true,
-    components: {
+    // components: true,
+    components: [
+        { path: '~/components'},
+        { path: '~/components/ui'}
+    ],
+    autoImports: {
         dirs: [
-            '~/components',
-            '~/components/ui'
-        ]
+            'composables',
+            'utils',
+            'utils/types'
+        ],
     },
     css: ['~/theme.css'],
     plugins: [
@@ -57,13 +62,13 @@ export default defineNuxtConfig({
         }
     },
     routeRules: {
-        "/dashboard": { ssr: false },
+        "/dashboard": {ssr: false},
         "/product-id": {ssr: true},
-        "/signin": { ssr: false },
-        "/signup": { ssr: false },
-        "/forgot-password": { ssr: false },
-        "/about": { ssr: true, prerender: true },
-        "/help": { ssr: true, prerender: true },
+        "/signin": {ssr: false},
+        "/signup": {ssr: false},
+        "/forgot-password": {ssr: false},
+        "/about": {ssr: true, prerender: true},
+        "/help": {ssr: true, prerender: true},
     },
 
 })

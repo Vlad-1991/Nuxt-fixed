@@ -19,8 +19,6 @@
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
 import {onMounted, onUnmounted, ref} from "vue";
-import type {imageType} from "@/utils/types/requestTypes";
-import { useNuxtApp } from '#app'
 
 const props = defineProps<{
   galleryID: string,
@@ -34,7 +32,6 @@ const loaded = ref(false)
 let lightbox: (PhotoSwipeLightbox | null)
 
 const imagesData = props.images
-// const emit = defineEmits(['imgLoaded'])
 
 onMounted((): void => {
   if (!lightbox) {
@@ -66,17 +63,11 @@ onUnmounted((): void => {
 
 const loadImg = () => {
   loading.value = false
-  // emit('imgLoaded')
 }
 
 const imgError = () => {
   console.log('Error loading image')
 }
-
-
-// onMounted(() => {
-//
-// })
 
 </script>
 

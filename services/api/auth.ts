@@ -1,5 +1,4 @@
 import requestAxios from "~/services/api/index"
-import {VUE_APP_FB_KEY} from "~/utils/composables/constants";
 
 export async function login(payload: {email: string, password: string }): Promise<any> {
 

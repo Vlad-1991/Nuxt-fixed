@@ -1,13 +1,8 @@
-import type {authType} from "@/utils/types/storeTypes";
 import {load, updateUser} from "~/services/api/requests";
-import {VUE_APP_FB_URL} from "~/utils/composables/constants";
-import type {userDataType} from "~/utils/types/requestTypes";
-import {useUiStore} from "~/stores/UiStore";
 
 const encode = (email: string): string => {
     return email.replace(/[@.]/g, '_');
 }
-
 
 export const useAuthStore = defineStore("AuthStore", {
     /* by default user isnt authorized */

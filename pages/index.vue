@@ -14,21 +14,9 @@ div
 
 <!-- Home component - contains bestseller list of products and Left Sidebar -->
 <script setup lang="ts">
-import CategorySide from "~/components/ui/CategorySide.vue";
-import ProductList from "~/components/ProductList.vue";
-import type {Ref} from "vue"
-import {ref} from "vue";
-import {useUiStore} from "~/stores/UiStore";
-
 const UiStore = useUiStore()
-
-import SortingSelector from "~/components/ui/SortingSelector.vue";
-import SearchProducts from "~/components/ui/SearchProducts.vue";
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
 import {load} from "~/services/api/requests";
-import type {productWithId} from "~/utils/types/requestTypes";
-import {filterSearchedProducts} from "~/utils/composables/search";
-import {BESTSELLER_COUNT, CATALOG_DATABASE} from "~/utils/composables/constants";
+
 
 definePageMeta({
   layout: 'default',

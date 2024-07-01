@@ -96,21 +96,9 @@
 <!-- this component contains with table of ordered products, form to collect information of customer by 3 steps
 all fields has basic validation -->
 <script setup lang="ts">
-import {useCartStore} from "~/stores/CartStore";
-import {computed, reactive, ref, watch} from "vue";
-import type {Ref} from "vue"
-import AppModal from "~/components/ui/AppModal.vue";
-import CategorySide from "~/components/ui/CategorySide.vue";
+import {addOrder} from "~/services/api/requests";
 
 const CartStore = useCartStore()
-import {useUiStore} from "~/stores/UiStore";
-import ToggleSidebar from "~/components/ui/ToggleSidebar.vue";
-import type {arrInfoType, productInCartType} from "~/utils/types/requestTypes";
-import {getKeyByValue, validateChecked, validateFieldWithIndex} from "~/utils/composables/validation";
-import {useAuthStore} from "~/stores/AuthStore";
-import {addOrder} from "~/services/api/requests";
-import {ORDERS_DATABASE, COUNTRIES} from "~/utils/composables/constants";
-
 const AuthStore = useAuthStore()
 
 definePageMeta({

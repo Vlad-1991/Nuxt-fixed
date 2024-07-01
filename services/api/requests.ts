@@ -1,8 +1,5 @@
-import { useNuxtApp, useAsyncData } from '#app'
+import {useAsyncData } from '#app'
 import requestAxios from "~/services/api/index";
-import type {categoriesType, userDataType} from "~/utils/types/requestTypes";
-import {CATEGORIES_DATABASE, ORDERS_DATABASE} from "~/utils/composables/constants";
-import {useUiStore} from "~/stores/UiStore";
 
 export async function load(key: string, url: string): Promise<any>{
 
@@ -11,7 +8,6 @@ export async function load(key: string, url: string): Promise<any>{
         return data
     })
 }
-
 
 export async function updateUser(url: string, userData: userDataType): Promise<any>{
     const data = await requestAxios.put(url, userData)

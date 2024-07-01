@@ -6,9 +6,8 @@
       h1 Ooops! There are no these page
       nuxt-link.link(:to="{name: 'Home'}") Back to home page
 </template>
+
 <script setup lang="ts">
-
-
 definePageMeta({
   layout: 'default',
   middleware: 'query-rules'

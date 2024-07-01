@@ -22,19 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, type Ref} from "vue"
-import {computed, ref} from "vue";
-const router = useRouter()
-import {useUiStore} from "~/stores/UiStore";
-import {VUE_APP_FB_URL} from "~/utils/composables/constants";
-import type {arrInfoType} from "~/utils/types/requestTypes";
-const UiStore = useUiStore()
-import {validateFieldWithIndex} from "~/utils/composables/validation";
-import {checkAllFields} from "~/utils/composables/validation";
-import {useAuthStore} from "~/stores/AuthStore";
 import {login} from "~/services/api/auth";
 import {load} from "~/services/api/requests";
 const AuthStore = useAuthStore()
+const UiStore = useUiStore()
+const router = useRouter()
 
 definePageMeta({
   layout: 'auth',
@@ -92,5 +84,4 @@ const SignIn = async (): Promise<void> => {
   }
 
 }
-
 </script>
