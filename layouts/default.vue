@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import {loadCategoriesToStore} from "~/services/api/requests";
+import {load} from "~/services/api/requests";
 const UiStore = useUiStore();
 const CartStore = useCartStore();
 const AuthStore = useAuthStore()
@@ -21,6 +21,8 @@ onMounted(async () => {
   if(AuthStore.isAuthentificated){
     await AuthStore.setUserInfo()
   }
+  await loadCategoriesToStore()
+
 })
 
 let response;
@@ -30,6 +32,7 @@ async function cartInit() {
   await CartStore.getCart();
 }
 
-loadCategoriesToStore()
+
+// loadCategoriesToStore()
 
 </script>

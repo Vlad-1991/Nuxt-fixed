@@ -50,14 +50,16 @@ const dataLoaded = ref(false)
 onMounted(async () => {
 
   try {
-    const {data} = await load('categories', CATEGORIES_DATABASE)
+   // const {data} = await load('categories', CATEGORIES_DATABASE)
+    const {data, error} = await useAsyncData('categories', () => load(CATEGORIES_DATABASE))
     categories = data.value
   }catch (e: string | unknown) {
     UiStore.setErrorMessage(e.message)
   }
 
   try {
-    const {data} = await load('single_product', CATALOG_DATABASE + route.params.id)
+   // const {data} = await load('single_product', CATALOG_DATABASE + route.params.id)
+    const {data, error} = await useAsyncData('single_product', () => load(CATALOG_DATABASE + route.params.id))
     product.value = data.value
     await defineReviewSended()
     dataLoaded.value = true

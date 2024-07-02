@@ -124,8 +124,8 @@ function generateBreadcrumbs(route: RouteLocationNormalized, cur_prod: Ref<{ nam
 async function getProductDetails(id: string | string[]): Promise<void> {
 
   try {
-    const {data, error} = await load('catalog', CATALOG_DATABASE)
-
+    //const {data, error} = await load('catalog', CATALOG_DATABASE)
+    const {data, error} = await useAsyncData('catalog', () => load(CATALOG_DATABASE))
 
     const res = data.value.filter((val: productWithId) => val.id === id)
     let product = res[0]

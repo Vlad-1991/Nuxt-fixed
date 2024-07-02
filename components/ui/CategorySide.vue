@@ -20,10 +20,17 @@
 </template>
 
 <script setup lang="ts">
-const UiStore = useUiStore()
-let route = useRoute()
+// onMounted(() => {
+//   const UiStore = useUiStore()
+//   let route = useRoute()
+//   const categories = ref([])
+//
+//   categories.value = UiStore.getAllCategories
+// })
+const route = useRoute()
 
-let categories = UiStore.getAllCategories
+
+// console.log(UiStore.getAllCategories)
 
 
 const emit = defineEmits(['showBestSellers', 'showCategory', 'showSubCategory'])
@@ -41,13 +48,13 @@ const toShowBestSellers = (): void => {
 
 
 const props = defineProps<{
-  // categories: [categoriesType],
-  checkboxBestSeller: boolean
+   categories: [categoriesType],
+  checkboxBestSeller: boolean,
 }>()
 
 /* initialization array with status of showing subcategory lists, not shown by default */
 const switched: Ref<boolean[]> = ref([])
-for(let i = 0; i < categories.length; i++){
+for(let i = 0; i < props.categories.length; i++){
   switched.value[i] = false
 }
 

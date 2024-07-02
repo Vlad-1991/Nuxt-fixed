@@ -25,7 +25,9 @@
 
 <!-- component of Cart, contains table with added products, names, qty, price, delete button and summary, also has button - go to checkout -->
 <script setup lang="ts">
-import {loadCategoriesToStore} from "~/services/api/requests";
+// import {loadCategoriesToStore} from "~/services/api/requests";
+
+
 
 definePageMeta({
   layout: 'default',
@@ -37,7 +39,6 @@ const CartStore = useCartStore()
 const UiStore = useUiStore()
 
 onMounted(async () => {
-
   await loadCategoriesToStore()
   await CartStore.getCart()
    products.value = CartStore.getCartProducts

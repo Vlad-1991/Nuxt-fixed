@@ -66,10 +66,10 @@ export const useAuthStore = defineStore("AuthStore", {
 
             if(this.getToken){
                 try{
-                    let data = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)
 
-                    let userData = data.data.value
+                    const {data} = await useAsyncData('userData', () => load(VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`))
 
+                    let userData = data.value
 
                     this.userName = userData.name
                     this.zip = userData.zip

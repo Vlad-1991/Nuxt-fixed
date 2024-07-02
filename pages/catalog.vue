@@ -1,8 +1,9 @@
 <template lang="pug">
   div
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
-    CategorySide.category-side(v-if="categories_info" :categories="categories_info" :checkboxBestSeller="checkboxBestSeller"
+    CategorySide.category-side(:checkboxBestSeller="checkboxBestSeller"
       @showBestSellers="changeShowBestsellers" @showCategory="showProductsInCategory" @showSubCategory="showProductsInSubCategory"
+      :categories="UiStore.getAllCategories"
       :style="{left: UiStore.sidebar}").mt20
     main.main-side
       h1.ml20 Catalog
@@ -40,10 +41,6 @@ const loading = ref(false)
 const searchQuery = ref()
 const searchQueryProducts = ref()
 
-const categories_info = ref()
-categories_info.value = UiStore.getAllCategories
-
-
 /* to load products from catalog, if query exists - filter products relative to category or subcategory, if sorting parameter exists -
 also sort products by criteria */
 const loadProductsCatalog = async (sorting?: string): Promise<void> => {
@@ -51,7 +48,8 @@ const loadProductsCatalog = async (sorting?: string): Promise<void> => {
   loading.value = true
 
   try {
-    const {data} = await load('catalog', CATALOG_DATABASE)
+    //const {data} = await load('catalog', CATALOG_DATABASE)
+    const {data} = await useAsyncData('catalog', () => load(CATALOG_DATABASE))
     all_products.value = data.value
 
     if (route.query.subcategory) {

@@ -2,7 +2,7 @@
 div
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side( :checkboxBestSeller="UiStore.getCheckboxBestSeller"
-      :style="{left: UiStore.sidebar}").mt20
+      :style="{left: UiStore.sidebar}" :categories="UiStore.getAllCategories").mt20
     main.main-side
       h1.ml20 Our Bestsellers
       SearchProducts(@changedSearch="activateSearch")
@@ -43,7 +43,9 @@ const loadProductsHome = async (sorting?: string): Promise<void> => {
   loading.value = true
 
   try {
-    const {data} = await load('catalog', CATALOG_DATABASE)
+    //const {data} = await load('catalog', CATALOG_DATABASE)
+    const {data, error} = await useAsyncData('catalog', () => load(CATALOG_DATABASE))
+
     products.value = data.value
     products.value = products.value.filter((val: productWithId) => val.saled >= BESTSELLER_COUNT)
 

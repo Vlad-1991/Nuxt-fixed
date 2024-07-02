@@ -3,14 +3,15 @@
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
-    div.loader(v-if="loader")
-    main.main-side.ml20(v-if="!settings && !loader")
+
+    main.main-side.ml20(v-if="!settings")
       h1 Hello, {{AuthStore.userName}}!
       h4.link(@click="showSettings") My Settings
       h3 My Promo Codes:
       p <span class="red">{{AuthStore.promo.code}}</span> : {{AuthStore.promo.value}}
       h3 My Orders:
-      table.table(v-if="orders" )
+      div.loader(v-if="loader")
+      table.table(v-if="orders && !loader" )
         thead
         tr.center
           th  #
@@ -60,7 +61,7 @@
         div(class="form-control" :class="{invalid: adress[3].error}")
           label(for="phone")  Phone
           input(type="tel"
-             placeholder="123-456-7890" id="phone" v-model.trim="adress[3].val" @input="validateFieldWithIndex(adress, 3)")
+            placeholder="123-456-7890" id="phone" v-model.trim="adress[3].val" @input="validateFieldWithIndex(adress, 3)")
           small(v-if="adress[3].error")  {{adress[3].error}}
       button.btn.main(:disabled="!validateSettings" @click="updateUserOnServer") Save
       p(v-if="updated") Your profile has been updated
@@ -89,14 +90,14 @@ onMounted(async () => {
   try {
     orders.value = await getOrdersByEmailId()
     loader.value = false
-  }catch (e: string | unknown) {
+  } catch (e: string | unknown) {
     UiStore.setErrorMessage(e.message)
   }
 
 })
 const authorized = ref()
 await AuthStore.prepareToken()
- authorized.value = AuthStore.getToken
+authorized.value = AuthStore.getToken
 
 watch(authorized, async (): Promise<void> => {
   if (!authorized.value) {
@@ -162,7 +163,7 @@ let validateSettings = computed((): boolean => {
 })
 
 const updateUserOnServer = async () => {
-  if(adress.value[0].val){
+  if (adress.value[0].val) {
     await AuthStore.updateUserinfo(getKeyByValue(adress.value[0].val), adress.value[1].val, adress.value[2].val, adress.value[3].val)
     updated.value = true
     setTimeout(() => {
@@ -177,11 +178,11 @@ function getKeyByValue(value: string) {
 }
 
 const getOrdersByEmailId = async (): Promise<void> => {
-    await AuthStore.prepareToken()
-   await AuthStore.setUserInfo()
-  const response = await loadOrdersById(AuthStore.email)
+  await AuthStore.prepareToken()
+  await AuthStore.setUserInfo()
+  const {data, error} = await useAsyncData('Orders', () => loadOrdersById())
 
-  let filteredOrders = response.filter((order: {}) => {
+  let filteredOrders = data.value.filter((order: {}) => {
     return (order.email === AuthStore.email)
   })
   return filteredOrders
@@ -193,7 +194,7 @@ const cancelOrder = async (id: number, order: {}): Promise<void> => {
 //   there will be PUT request to server to update order
   try {
     await updateInDatabase(ORDERS_DATABASE + id, updatedOrder)
-  }catch (e: string | unknown) {
+  } catch (e: string | unknown) {
     UiStore.setErrorMessage(e.message)
   }
 }

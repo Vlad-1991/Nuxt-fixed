@@ -74,7 +74,7 @@ const SignIn = async (): Promise<void> => {
   try {
     let data = await login(authData)
     AuthStore.setToken(data.idToken)
-    let userData = await load('userData', VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${data.idToken}`)
+    let userData = await load(VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${data.idToken}`)
     if(userData){
       AuthStore.setUserInfo(userData)
     }
