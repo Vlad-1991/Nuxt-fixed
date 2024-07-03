@@ -15,6 +15,8 @@ const UiStore = useUiStore();
 const CartStore = useCartStore();
 const AuthStore = useAuthStore()
 
+
+
 onMounted(async () => {
   await cartInit();
   await AuthStore.prepareToken()
@@ -24,8 +26,6 @@ onMounted(async () => {
   await loadCategoriesToStore()
 
 })
-
-let response;
 
 /* to get all products, putted by user to cart earlier, from local storage to Cart store */
 async function cartInit() {

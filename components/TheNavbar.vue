@@ -21,11 +21,11 @@
           button.btn.white.mr20(type="button") Sign Up
       div(v-else)
         nuxt-link(:to="{name: 'dashboard'}" class="main").mr20
-          fa(icon="user" size="lg")
+          fas(icon="user" size="lg")
         nuxt-link(:to="{name: 'index'}" @click="AuthStore.logout")
           button.btn.white.mr20(type="button") Logout
       nuxt-link(:to="{name: 'cart'}" class="main")
-        fa(icon="shopping-cart" size="lg")
+        fas(icon="shopping-cart" size="lg")
         span(class="cart-count") {{CartStore.getCartCount}}
 </template>
 

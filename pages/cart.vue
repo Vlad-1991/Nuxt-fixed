@@ -17,7 +17,7 @@
                 button.btn_cart(@click="CartStore.updateCount({id: product.id, cnt: ++product.qty})" type="button") +
               span.mw100 ${{(parseFloat(product.qty) * parseFloat(product.price)).toFixed(2)}}
               span
-                fa(icon="trash-alt" size="lg" @click="CartStore.deleteProduct(product.id)")
+                fas(icon="trash-alt" size="lg" @click="CartStore.deleteProduct(product.id)")
           h2.right Summary: ${{parseFloat(CartStore.getSummary).toFixed(2)}}
           nuxt-link(:to="{name: 'checkout'}")
             button.btn.primary.right.btn_inline_block(type="button") Checkout

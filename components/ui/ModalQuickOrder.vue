@@ -25,6 +25,8 @@
 </template>
 
 <script setup lang="ts">
+import {addOrder} from "~/services/api/requests";
+const UiStore = useUiStore()
 const orderSended = ref(false)
 
 const emit = defineEmits(['close'])
@@ -60,7 +62,7 @@ const phone = ref({
 
 /* to put all fields and current product object to one object and can be sended to server,
  orderSended - ref, if true - will be called another window, that confirmed successfull quick order */
-const sendQuickOrder = (): void => {
+const sendQuickOrder = async (): Promise<void> => {
   let order: {[key: string]: (string | boolean | {})} = {}
   order["name"] = name.value.val
   order["phone"] = phone.value.val
@@ -70,7 +72,15 @@ const sendQuickOrder = (): void => {
     productPrice: product.price,
     productSum: (parseFloat(product.price) * qty).toFixed(2)
   }
-  orderSended.value = true
+  try {
+    console.log(order)
+    await addOrder(QUICK_ORDERDS_DATABASE, order)
+    orderSended.value = true
+  }catch (e: string | unknown) {
+    UiStore.setErrorMessage(e.message)
+  }
+
+
 }
 
 </script>

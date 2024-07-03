@@ -6,5 +6,5 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faShoppingCart, faWindowClose, faTrashAlt, faUser)
 
 export default defineNuxtPlugin((nuxtApp) => {
-    nuxtApp.vueApp.component('fa', FontAwesomeIcon)
+    nuxtApp.vueApp.component('fas', FontAwesomeIcon)
 })

@@ -20,7 +20,7 @@
                 input.btn_cart_input(type="number" min="1" max="100" step="1" pattern="[0-9]{3}" v-model="cart_qty" @input="onInput($event.target.value)")
                 button.btn_cart(@click="increase" type="button") +
               span
-                button.btn.danger.add_to_cart(@click="initAddCart" type="button") Add to Cart
+                button.btn.danger.add_to_cart(@click="initAddCart" type="button" :disabled="product_added") Add to Cart
                 h3.inline-block.price_sum(v-if="cart_qty > 1") Summary: ${{(cart_qty * parseFloat(product.price)).toFixed(2)}}
                 h3.inline-block(v-if="message_overload") Max count of this position is 100
                 h3.primary.inline-block(v-if="product_added") Product added to Cart
@@ -47,40 +47,6 @@ definePageMeta({
 
 const dataLoaded = ref(false)
 
-onMounted(async () => {
-
-  try {
-   // const {data} = await load('categories', CATEGORIES_DATABASE)
-    const {data, error} = await useAsyncData('categories', () => load(CATEGORIES_DATABASE))
-    categories = data.value
-  }catch (e: string | unknown) {
-    UiStore.setErrorMessage(e.message)
-  }
-
-  try {
-   // const {data} = await load('single_product', CATALOG_DATABASE + route.params.id)
-    const {data, error} = await useAsyncData('single_product', () => load(CATALOG_DATABASE + route.params.id))
-    product.value = data.value
-    await defineReviewSended()
-    dataLoaded.value = true
-    writeCategoryAndSubcategory()
-  }catch (e: string | unknown){
-    UiStore.setErrorMessage(e.message)
-  }
-
-
-  useHead({
-    title: product.value.name,
-    meta: [
-      { name: "description", content: product.value.description },
-      { property: "og:description", content: product.value.description },
-      { property: "og:image", content: product.value.image[0].thumbnailURL },
-      { name: "twitter:card", content: product.value.name },
-    ],
-  })
-
-})
-
 const CartStore = useCartStore()
 const route = useRoute()
 const AuthStore = useAuthStore()
@@ -100,6 +66,11 @@ let categories = [{}]
 
 const categories_info = ref()
 categories_info.value = UiStore.getAllCategories
+
+ onMounted(async () => {
+   await defineReviewSended()
+ })
+
 
 const initAddCart = () => {
   let resp = CartStore.addToCart(product.value, cart_qty.value)
@@ -228,4 +199,35 @@ const defineReviewSended = async () => {
   }
 
 }
+
+try {
+  // const {data} = await load('categories', CATEGORIES_DATABASE)
+  const {data, error} = await useAsyncData('categories', () => load(CATEGORIES_DATABASE))
+  categories = data.value
+}catch (e: string | unknown) {
+
+  UiStore.setErrorMessage(e.message)
+}
+
+try {
+  // const {data} = await load('single_product', CATALOG_DATABASE + route.params.id)
+  const {data, error} = await useAsyncData('single_product', () => load(CATALOG_DATABASE + route.params.id))
+  product.value = data.value
+ // await defineReviewSended()
+  dataLoaded.value = true
+  writeCategoryAndSubcategory()
+}catch (e: string | unknown){
+  UiStore.setErrorMessage(e.message)
+}
+
+useHead({
+  title: product.value.name,
+  meta: [
+    { name: "description", content: product.value.description },
+    { property: "og:description", content: product.value.description },
+    { property: "og:image", content: product.value.image[0].thumbnailURL },
+    { name: "twitter:card", content: product.value.name },
+  ],
+})
+
 </script>

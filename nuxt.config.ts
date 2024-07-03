@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     },
     css: ['~/theme.css'],
     plugins: [
-        '~/plugins/fontawesome'
+        '~/plugins/fontawesome.ts'
     ],
     vite: {
         vue: {
