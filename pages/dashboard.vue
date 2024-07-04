@@ -95,15 +95,16 @@ onMounted(async () => {
   }
 
 })
-const authorized = ref()
-await AuthStore.prepareToken()
-authorized.value = AuthStore.getToken
 
-watch(authorized, async (): Promise<void> => {
-  if (!authorized.value) {
-    await router.push({name: 'signin'})
+await AuthStore.prepareToken()
+/* if user log out from dashboard page - redirect to Home */
+const authorized = computed(() => AuthStore.getToken)
+
+watch(authorized, async (newVal): Promise<void> => {
+  if (!newVal) {
+    await router.push({name: 'index'})
   }
-})
+},  { immediate: true })
 
 const adress: Ref<arrInfoType[]> = ref([
   {
@@ -180,9 +181,9 @@ function getKeyByValue(value: string) {
 const getOrdersByEmailId = async (): Promise<void> => {
   await AuthStore.prepareToken()
   await AuthStore.setUserInfo()
-  const {data, error} = await useAsyncData('Orders', () => loadOrdersById())
+  const data = await loadOrdersById()
 
-  let filteredOrders = data.value.filter((order: {}) => {
+  let filteredOrders = data.filter((order: {}) => {
     return (order.email === AuthStore.email)
   })
   return filteredOrders

@@ -22,8 +22,8 @@
       div(v-else)
         nuxt-link(:to="{name: 'dashboard'}" class="main").mr20
           fas(icon="user" size="lg")
-        nuxt-link(:to="{name: 'index'}" @click="AuthStore.logout")
-          button.btn.white.mr20(type="button") Logout
+        //nuxt-link(:to="{name: 'index'}" @click="AuthStore.logout")
+        button.btn.white.mr20(type="button" @click="AuthStore.logout") Logout
       nuxt-link(:to="{name: 'cart'}" class="main")
         fas(icon="shopping-cart" size="lg")
         span(class="cart-count") {{CartStore.getCartCount}}

@@ -13,6 +13,7 @@
       small(v-if="auth[1].error") {{auth[1].error}}
 
     button(class="btn main mt10" type="sumbit" :disabled="!validatedAuth" @click="SignIn") Sign In
+    h4.danger(v-if="error") Invalid login or password
     div.mt10
       nuxt-link(:to="{path: '/forgotpassword'}" tag="div")
         small.link Forgot Password?
@@ -37,6 +38,8 @@ onMounted(async () => {
     router.push({name: 'index'})
   }
 })
+
+const error = ref(false)
 
 /* array with all info about fields - email and password, with validation rules */
 const auth: Ref<arrInfoType[]> = ref([
@@ -72,14 +75,17 @@ const SignIn = async (): Promise<void> => {
   /* there will be sending data to server, if response positive - redirect to catalog page */
   try {
     let data = await login(authData)
+    error.value = false
     AuthStore.setToken(data.idToken)
-    let userData = await load(VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${data.idToken}`)
+    let userData = await load(VUE_APP_FB_URL + `/users/${encode(authData.email)}.json?auth=${data.idToken}`)
     if(userData){
       AuthStore.setUserInfo(userData)
     }
     await router.push({name: 'index'})
   } catch (e: any | undefined) {
-    UiStore.setErrorMessage(e.message);
+    if(e.message === 'Request failed with status code 400'){
+      error.value = true
+    }
   }
 
 }

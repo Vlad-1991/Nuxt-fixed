@@ -71,3 +71,7 @@ export const checkAllFields = (arrInfo: Array<arrInfoType>): boolean => {
     })
     return validCount === arrInfo.length;
 }
+
+export const encode = (email: string): string => {
+    return email.replace(/[@.]/g, '_');
+}

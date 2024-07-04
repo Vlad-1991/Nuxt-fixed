@@ -1,8 +1,8 @@
 import {load, updateUser} from "~/services/api/requests";
 
-const encode = (email: string): string => {
-    return email.replace(/[@.]/g, '_');
-}
+// const encode = (email: string): string => {
+//     return email.replace(/[@.]/g, '_');
+// }
 
 export const useAuthStore = defineStore("AuthStore", {
     /* by default user isnt authorized */
@@ -67,10 +67,7 @@ export const useAuthStore = defineStore("AuthStore", {
             if(this.getToken){
                 try{
 
-                    const {data} = await useAsyncData('userData', () => load(VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`))
-
-                    let userData = data.value
-
+                    const userData = await load(VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)
                     this.userName = userData.name
                     this.zip = userData.zip
                     this.email = userData.email

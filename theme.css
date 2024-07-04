@@ -86,9 +86,9 @@ h3 {
 /*    color: #42b983;*/
 /*}*/
 
-/*.danger {*/
-/*    color: #e53935;*/
-/*}*/
+.danger {
+    color: #e53935;
+}
 
 .btn {
     color: #42b983;
