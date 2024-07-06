@@ -226,6 +226,13 @@ const getOrdersByEmailId = async (): Promise<void> => {
   let filteredOrders = data.filter((order: {}) => {
     return (order.email === AuthStore.email)
   })
+
+  filteredOrders.sort((a: {}, b: {}) => {
+    const dateA = new Date(a.date)
+    const dateB = new Date(b.date)
+    return dateB.getTime() - dateA.getTime()
+  })
+
   return filteredOrders
 }
 
