@@ -152,7 +152,7 @@ const SignUp = async (): Promise<void> => {
     zip: auth.value[4].val,
     phone: auth.value[5].val,
     password: auth.value[6].val,
-    promo: {code: '', discount: null, value: ''}
+    promo: {"code": '', "discount": null, "value": ''}
   }
 
   try {
