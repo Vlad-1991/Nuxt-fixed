@@ -1141,3 +1141,7 @@ fieldset {
 .half-width{
     width: 50%;
 }
+
+.dashboard-settings {
+    align-items: flex-start;
+}

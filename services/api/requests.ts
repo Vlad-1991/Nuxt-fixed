@@ -10,6 +10,11 @@ export async function updateUser(url: string, userData: userDataType): Promise<a
     return data
 }
 
+export async function createUser(url: string, userData: userDataType): Promise<any>{
+    const data = await requestAxios.put(url, userData)
+    return data
+}
+
 
 export async function addOrder(url: string, order: { [key: string]: (string | boolean | {}) }): Promise<any>{
     const data = await requestAxios.post(url, order)

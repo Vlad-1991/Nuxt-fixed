@@ -1,5 +1,5 @@
 <template lang="pug">
-  form(class="card" @submit.prevent="SignIn")
+  form(class="card" @submit.prevent)
     h1 Sign In
 
     div(:class="['form-control', 'mb10', {invalid: auth[0].error}]")

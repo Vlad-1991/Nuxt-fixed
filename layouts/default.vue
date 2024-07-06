@@ -2,7 +2,7 @@
   div.wrapper
     TheNavbar
     div.container.with-nav.mb50
-      TheBreadCrumbs.breadcrumbs.mt20
+      TheBreadCrumbs.breadcrumbs.mt20(v-if="catLoaded")
       ErrorMessage.mt20(v-if="UiStore.getErrorMessage")
       NuxtPage
       slot
@@ -15,7 +15,7 @@ const UiStore = useUiStore();
 const CartStore = useCartStore();
 const AuthStore = useAuthStore()
 
-
+const catLoaded = ref(false)
 
 onMounted(async () => {
   await cartInit();
@@ -24,7 +24,7 @@ onMounted(async () => {
     await AuthStore.setUserInfo()
   }
   await loadCategoriesToStore()
-
+  catLoaded.value = true
 })
 
 /* to get all products, putted by user to cart earlier, from local storage to Cart store */

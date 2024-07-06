@@ -8,7 +8,8 @@
       h1 Hello, {{AuthStore.userName}}!
       h4.link(@click="showSettings") My Settings
       h3 My Promo Codes:
-      p <span class="red">{{AuthStore.promo.code}}</span> : {{AuthStore.promo.value}}
+      h3(v-if="!AuthStore.promo.code") There are no any promocodes
+      p(v-else) <span class="red">{{AuthStore.promo.code}}</span> : {{AuthStore.promo.value}}
       h3 My Orders:
       div.loader(v-if="loader")
       table.table(v-if="orders.length > 0 && !loader" )
@@ -40,42 +41,51 @@
     main.main-side.ml20(v-if="settings" )
       h3 My Settings
       h4.link(@click="settings = false") Back to Dashboard
-      form.half-width
+      div.cart_flex.dashboard-settings
+        form.half-width
 
-        div(class="form-control" :class="{invalid: adress[4].error}")
-          label(for="full_name")  {{adress[4].label}}
-          input(type="text" id="full_name" placeholder="John Doe" v-model.trim="adress[4].val" @input="validateFieldWithIndex(adress, 4)")
-          small(v-if="adress[4].error")  {{adress[4].error}}
+          div(class="form-control" :class="{invalid: adress[4].error}")
+            label(for="full_name")  {{adress[4].label}}
+            input(type="text" id="full_name" placeholder="John Doe" v-model.trim="adress[4].val" @input="validateFieldWithIndex(adress, 4)")
+            small(v-if="adress[4].error")  {{adress[4].error}}
 
-        div.mt20(class="form-control")
-          label(for="country") Country
-          select(id="country" v-model="adress[0].val" @change="validateChecked(adress, 0)")
-            option(value="usa")  United States
-            option(value="mexico") Mexico
-            option(value="canada") Canada
+          div.mt20(class="form-control")
+            label(for="country") Country
+            select(id="country" v-model="adress[0].val" @change="validateChecked(adress, 0)")
+              option(value="usa")  United States
+              option(value="mexico") Mexico
+              option(value="canada") Canada
 
-        div(class="form-control" :class="{invalid: adress[1].error}")
-          label(for="adress")  {{adress[1].label}}
-          input(type="text" id="adress" placeholder="Boulevard str 8, fl. 321" v-model.trim="adress[1].val" @input="validateFieldWithIndex(adress, 1)")
-          small(v-if="adress[1].error")  {{adress[1].error}}
+          div(class="form-control" :class="{invalid: adress[1].error}")
+            label(for="adress")  {{adress[1].label}}
+            input(type="text" id="adress" placeholder="Boulevard str 8, fl. 321" v-model.trim="adress[1].val" @input="validateFieldWithIndex(adress, 1)")
+            small(v-if="adress[1].error")  {{adress[1].error}}
 
-        div(class="form-control" :class="{invalid: adress[2].error}")
-          label(for="zip") ZIP Code
-          input(type="text" placeholder="90123" id="zip" pattern="[0-9]{5}" v-model.trim="adress[2].val" @input="validateFieldWithIndex(adress, 2)")
-          small(v-if="adress[2].error")  {{adress[2].error}}
+          div(class="form-control" :class="{invalid: adress[2].error}")
+            label(for="zip") ZIP Code
+            input(type="text" placeholder="90123" id="zip" pattern="[0-9]{5}" v-model.trim="adress[2].val" @input="validateFieldWithIndex(adress, 2)")
+            small(v-if="adress[2].error")  {{adress[2].error}}
 
-        div(class="form-control" :class="{invalid: adress[3].error}")
-          label(for="phone")  Phone
-          input(type="tel"
-            placeholder="123-456-7890" id="phone" v-model.trim="adress[3].val" @input="validateFieldWithIndex(adress, 3)")
-          small(v-if="adress[3].error")  {{adress[3].error}}
-      button.btn.main(:disabled="!validateSettings" @click="updateUserOnServer") Save
-      p(v-if="updated") Your profile has been updated
+          div(class="form-control" :class="{invalid: adress[3].error}")
+            label(for="phone")  Phone
+            input(type="tel"
+              placeholder="123-456-7890" id="phone" v-model.trim="adress[3].val" @input="validateFieldWithIndex(adress, 3)")
+            small(v-if="adress[3].error")  {{adress[3].error}}
+          button.btn.main(:disabled="!validateSettings" @click="updateUserOnServer") Save
+        p(v-if="updated") Your profile has been updated
 
+        form.half-width
+          div(:class="['form-control', 'mb10', {invalid: password[0].error}]")
+            label(for="newpassword") {{password[0].label}}
+            input(type="password" id="newpassword" v-model.trim="password[0].val" @input="validateFieldWithIndex(password, 0)" maxlength="10")
+            small(v-if="password[0].error") {{password[0].error}}
+          button.btn.warning(type="button" :disabled="!password[0].valid" @click="initChangePassword()") Change Password
+          h4.primary(v-if="pasChanged") Your password was successfully changed
 </template>
 
 <script setup lang="ts">
 import {loadOrdersById, updateInDatabase} from "~/services/api/requests";
+import {changePassword} from "~/services/api/auth";
 
 definePageMeta({
   layout: 'default',
@@ -87,6 +97,8 @@ const orders = ref([])
 const UiStore = useUiStore()
 const AuthStore = useAuthStore()
 const loader = ref(true)
+const pasChanged = ref(false)
+
 /* all adress fields with rules of validation */
 
 const settings = ref(false)
@@ -154,6 +166,17 @@ const adress: Ref<arrInfoType[]> = ref([
   }
 ])
 
+const password: Ref<[{}]> = ref([
+  {
+    label: 'Type new password',
+    val: '',
+    pattern: /^[0-9A-Za-z]{5,10}$/,
+    valid: false,
+    error: '',
+    errorText: 'Please enter correct password, min 5 - max 10 symbols'
+  }
+])
+
 const showSettings = () => {
   settings.value = true
   adress.value[0].val = COUNTRIES[AuthStore.country]
@@ -215,5 +238,16 @@ const cancelOrder = async (id: number, order: {}): Promise<void> => {
   } catch (e: string | unknown) {
     UiStore.setErrorMessage(e.message)
   }
+}
+
+const initChangePassword = async () => {
+  try {
+    await changePassword(password.value[0].val, AuthStore.getToken)
+    password.value[0].val = ''
+    pasChanged.value = true
+  }catch (e) {
+    UiStore.setErrorMessage(e.message)
+  }
+
 }
 </script>

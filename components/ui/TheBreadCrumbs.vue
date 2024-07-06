@@ -12,6 +12,12 @@ import {load} from "@/services/api/requests";
 const UiStore = useUiStore()
 const route = useRoute()
 
+let categories = []
+
+
+
+
+
 const cur_prod = ref({
   name: '',
   caturl: '',
@@ -67,6 +73,7 @@ function generateBreadcrumbs(route: RouteLocationNormalized, cur_prod: Ref<{ nam
     ])
     return UiStore.getBreadcrumbs
   } else if (route.name === 'catalog' && route.query.subcategory) {
+
     getCategoryAndSubcategory(categories, route);
     categoriesInfo.value.cat = UiStore.getCategory;
     categoriesInfo.value.subcat = UiStore.getSubcategory;
@@ -139,12 +146,15 @@ async function getProductDetails(id: string | string[]): Promise<void> {
   }
 }
 
-let categories = UiStore.getAllCategories
 
+categories = UiStore.getAllCategories
 getCategoryAndSubcategory(categories, route)
 
 const capitalize = (string: string) => string[0].toUpperCase() + string.slice(1);
 
 let breadcrumbs = computed((): breadcrumbsArrayType[] | undefined => generateBreadcrumbs(route, cur_prod, categories))
+
+
+
 
 </script>
