@@ -11,7 +11,7 @@
       p <span class="red">{{AuthStore.promo.code}}</span> : {{AuthStore.promo.value}}
       h3 My Orders:
       div.loader(v-if="loader")
-      table.table(v-if="orders && !loader" )
+      table.table(v-if="orders.length > 0 && !loader" )
         thead
         tr.center
           th  #
@@ -36,11 +36,17 @@
               button.btn.danger(v-if="order.status !=='Canceled'" type="button" @click="cancelOrder(order.id, order)") Cancel
             td {{order.comment}}
             td {{order.postService}}
-
+      h3(v-else) There are no any orders yet
     main.main-side.ml20(v-if="settings" )
       h3 My Settings
       h4.link(@click="settings = false") Back to Dashboard
       form.half-width
+
+        div(class="form-control" :class="{invalid: adress[4].error}")
+          label(for="full_name")  {{adress[4].label}}
+          input(type="text" id="full_name" placeholder="John Doe" v-model.trim="adress[4].val" @input="validateFieldWithIndex(adress, 4)")
+          small(v-if="adress[4].error")  {{adress[4].error}}
+
         div.mt20(class="form-control")
           label(for="country") Country
           select(id="country" v-model="adress[0].val" @change="validateChecked(adress, 0)")
@@ -136,6 +142,15 @@ const adress: Ref<arrInfoType[]> = ref([
     valid: false,
     error: '',
     errorText: 'Please enter correct Phone number, format: 123-456-7890 or 1234567890'
+  },
+  {
+    label: 'Full Name',
+    val: '',
+    pattern: /^[a-zA-Z .,0-9]{3,100}$/,
+    valid: false,
+    activated: false,
+    error: '',
+    errorText: 'Please enter correct full name, minimum 3 symbols'
   }
 ])
 
@@ -145,11 +160,13 @@ const showSettings = () => {
   adress.value[1].val = AuthStore.adress
   adress.value[2].val = AuthStore.zip
   adress.value[3].val = AuthStore.phone
+  adress.value[4].val = AuthStore.getUserName
 
   validateChecked(adress.value, 0)
   validateFieldWithIndex(adress.value, 1)
   validateFieldWithIndex(adress.value, 2)
   validateFieldWithIndex(adress.value, 3)
+  validateFieldWithIndex(adress.value, 4)
 }
 
 /* to validate form - collect all fields from form and count - if all valid - customer have access to click to next step */
@@ -165,7 +182,7 @@ let validateSettings = computed((): boolean => {
 
 const updateUserOnServer = async () => {
   if (adress.value[0].val) {
-    await AuthStore.updateUserinfo(getKeyByValue(adress.value[0].val), adress.value[1].val, adress.value[2].val, adress.value[3].val)
+    await AuthStore.updateUserinfo(getKeyByValue(adress.value[0].val), adress.value[1].val, adress.value[2].val, adress.value[3].val, adress.value[4].val)
     updated.value = true
     setTimeout(() => {
       updated.value = false

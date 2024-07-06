@@ -1,4 +1,5 @@
 import {load, updateUser} from "~/services/api/requests";
+import {getEmailFromToken} from "~/services/api/auth";
 
 // const encode = (email: string): string => {
 //     return email.replace(/[@.]/g, '_');
@@ -13,7 +14,6 @@ export const useAuthStore = defineStore("AuthStore", {
             country: '',
             adress: '',
             phone: '',
-            orders: [],
             promo: {},
             token: '',
             zip: ''
@@ -62,20 +62,37 @@ export const useAuthStore = defineStore("AuthStore", {
             }
         },
 
-        async setUserInfo(): Promise<void> {
+        async setUserInfo(userData?: {}): Promise<void> {
+
+            if(userData){
+                this.userName = userData.name
+                this.zip = userData.zip
+                this.email = userData.email
+                this.country = userData.country
+                this.adress = userData.address
+                this.phone = userData.phone
+                this.orders = userData.orders
+                this.promo = userData.promo
+            }
 
             if(this.getToken){
                 try{
+                    const data = await getEmailFromToken(this.getToken)
 
-                    const userData = await load(VUE_APP_FB_URL + `/users/v_gmail_com.json?auth=${this.getToken}`)
-                    this.userName = userData.name
-                    this.zip = userData.zip
-                    this.email = userData.email
-                    this.country = userData.country
-                    this.adress = userData.address
-                    this.phone = userData.phone
-                    this.orders = userData.orders
-                    this.promo = userData.promo
+                    if (data.users && data.users.length > 0) {
+                        const user = data.users[0];
+                        const userEmail = user.email;
+                         const userData = await load(VUE_APP_FB_URL + `/users/${encode(userEmail)}.json?auth=${this.getToken}`)
+                        this.userName = userData.name
+                        this.zip = userData.zip
+                        this.email = userData.email
+                        this.country = userData.country
+                        this.adress = userData.address
+                        this.phone = userData.phone
+                        this.orders = userData.orders
+                        this.promo = userData.promo
+                    }
+
                 }catch (e: string | unknown) {
                     const UiStore = useUiStore()
                     UiStore.setErrorMessage(e.message);
@@ -84,7 +101,7 @@ export const useAuthStore = defineStore("AuthStore", {
 
 
         },
-        async updateUserinfo(country: string, adress: string, zip: string, phone: string): Promise<void> {
+        async updateUserinfo(country: string, adress: string, zip: string, phone: string, name: string): Promise<void> {
             let userData: userDataType = {
                 'country': country,
                 'address': adress,
@@ -93,7 +110,7 @@ export const useAuthStore = defineStore("AuthStore", {
                 'email': this.email,
                 'orders': this.orders,
                 'promo': this.promo,
-                'name': this.userName
+                'name': name
             }
 
             try {

@@ -7,14 +7,16 @@
       input(type="email" id="email" v-model.trim="auth[0].val" @input="validateFieldWithIndex(auth, 0)")
       small(v-if="auth[0].error") {{auth[0].error}}
 
-    button(class="btn main mt10" type="sumbit" :disabled="!auth[0].valid" @click="SendEmail") Send Email
+    button(class="btn main mt10" type="sumbit" :disabled="!auth[0].valid" @click="SendEmail") Reset Password
 
     teleport(to="body")
-      app-modal(v-if="modal" title="Your password was sent" @close="modal = false") Please check your inbox on email
+      app-modal(v-if="modal" title="Your password was sent" @close="modal = false") Please check your inbox on email, then click on link to reset password
 </template>
 
 <!-- component renders form to collect email and send request to server (must be realized with back-end) -->
 <script setup lang="ts">
+import {resetPassword} from "~/services/api/auth";
+
 const AuthStore = useAuthStore()
 const router = useRouter()
 
@@ -46,12 +48,17 @@ const auth: Ref<arrInfoType[]> = ref([
 const modal = ref(false)
 
 /*  Send email with password to user email */
-const SendEmail = (): void => {
+const SendEmail = async (): void => {
   let authData = {
-    email: auth.value[0].val
+    email: auth.value[0].val,
+    requestType: "PASSWORD_RESET"
   }
-  /* must be realized with back-end */
-  console.log(authData)
+
+  try {
+    await resetPassword(authData)
+  }catch (e: string | unknown) {
+    console.log(e.message)
+  }
 
   modal.value = true
 

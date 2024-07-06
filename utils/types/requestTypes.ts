@@ -121,7 +121,13 @@ export interface subcategoryType {
 
 export interface authType {
     userName: string,
-    userId: string
+    email: string,
+    country: string,
+    adress: string,
+    phone: string,
+    promo: {},
+    token: string,
+    zip: string
 }
 
 export interface breadcrumbsArrayType {

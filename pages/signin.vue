@@ -79,7 +79,7 @@ const SignIn = async (): Promise<void> => {
     AuthStore.setToken(data.idToken)
     let userData = await load(VUE_APP_FB_URL + `/users/${encode(authData.email)}.json?auth=${data.idToken}`)
     if(userData){
-      AuthStore.setUserInfo(userData)
+      await AuthStore.setUserInfo(userData)
     }
     await router.push({name: 'index'})
   } catch (e: any | undefined) {

@@ -24,3 +24,4 @@ export async function loadOrdersById(){
 export async function updateInDatabase(url: string, updatedObject: {}): Promise<void>{
     await requestAxios.put(url, updatedObject)
 }
+
