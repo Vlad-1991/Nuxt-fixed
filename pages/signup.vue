@@ -57,6 +57,8 @@ const UiStore = useUiStore()
 const modal = ref(false)
 const AuthStore = useAuthStore()
 
+const serverError = ref('')
+
 definePageMeta({
   layout: 'auth',
   middleware: 'auth',
@@ -96,27 +98,17 @@ const auth: Ref<arrInfoType[]> = ref([
   {
     label: 'Address (Optional)',
     val: '',
-   // pattern: /^[a-zA-Z .,0-9]{10,100}$/,
     valid: true,
-    //activated: false,
-    // error: '',
-    // errorText: 'Please enter correct adress, minimum 10 symbols'
   },
   {
     label: 'ZIP (Optional)',
     val: '',
-    // pattern: /^[0-9]{5}$/,
     valid: true,
-    // error: '',
-    // errorText: 'Please enter correct ZIP code, 5 symbols'
   },
   {
     label: 'Phone (Optional)',
     val: '',
-    // pattern: /^[0-9]{3}-{0,1}[0-9]{3}-{0,1}[0-9]{4}$/,
     valid: true,
-    // error: '',
-    // errorText: 'Please enter correct Phone number, format: 123-456-7890 or 1234567890'
   },
   {
     label: 'Please Enter Your Password',
@@ -163,16 +155,14 @@ const SignUp = async (): Promise<void> => {
     promo: {code: '', discount: null, value: ''}
   }
 
-  // try {
+  try {
     const response = await signUp({email: authData.email, password: authData.password})
     AuthStore.setToken(response.idToken)
     const userCreated = await createUser(VUE_APP_FB_URL + `/users/${encode(authData.email)}.json?auth=${AuthStore.getToken}`, authData)
     modal.value = true
-  // }catch (e: string | unknown) {
-  //   serverError.value = e.message
-  // }
-  //console.log(authData)
+  }catch (e: string | unknown) {
+     serverError.value = e.message
+   }
 
-  // router.push({name: 'catalog'})
 }
 </script>
