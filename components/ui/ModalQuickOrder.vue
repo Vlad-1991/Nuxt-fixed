@@ -73,7 +73,6 @@ const sendQuickOrder = async (): Promise<void> => {
     productSum: (parseFloat(product.price) * qty).toFixed(2)
   }
   try {
-    console.log(order)
     await addOrder(QUICK_ORDERDS_DATABASE, order)
     orderSended.value = true
   }catch (e: string | unknown) {
