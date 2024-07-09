@@ -95,7 +95,12 @@ export const useAuthStore = defineStore("AuthStore", {
 
                 }catch (e: string | unknown) {
                     const UiStore = useUiStore()
-                    UiStore.setErrorMessage(e.message);
+                     if(e.message === 'Request failed with status code 400'){
+                         this.logout()
+                     }else{
+                         UiStore.setErrorMessage(e.message)
+                     }
+
                 }
             }
 
