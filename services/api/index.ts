@@ -1,8 +1,10 @@
 import axios from "axios";
 import type {AxiosInstance} from "axios"
 
+
 const requestAxios: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: process.env.APP_URL
+
 })
 
 requestAxios.interceptors.response.use(

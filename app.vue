@@ -1,6 +1,7 @@
 <template lang="pug">
   div
     NuxtRouteAnnouncer
+    VitePwaManifest
     NuxtLayout
 </template>
 
