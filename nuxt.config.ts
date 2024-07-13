@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import compression from "compression";
 
 export default defineNuxtConfig({
     runtimeConfig: {
@@ -86,26 +87,32 @@ export default defineNuxtConfig({
             start_url: "/",
             background_color: "#FFFFFF",
             theme_color: "#ADD8E6FF",
+            orientation: "landscape",
+            scope: "/",
             icons: [
                 {
-                    src: "lamotte_company_logo-64.png",
+                    src: "/lamotte_company_logo-64.png",
                     sizes: "64x64",
-                    type: "image/png"
+                    type: "image/png",
+                    purpose: "any"
                 },
                 {
-                    src: "lamotte_company_logo-128.png",
+                    src: "/lamotte_company_logo-128.png",
                     sizes: "128x128",
-                    type: "image/png"
+                    type: "image/png",
+                    purpose: "any"
                 },
                 {
-                    src: "lamotte_company_logo-144.png",
+                    src: "/lamotte_company_logo-144.png",
                     sizes: "144x144",
-                    type: "image/png"
+                    type: "image/png",
+                    purpose: "any"
                 },
                 {
-                    src: "lamotte_company_logo-512.png",
+                    src: "/lamotte_company_logo-512.png",
                     sizes: "512x512",
-                    type: "image/png"
+                    type: "image/png",
+                    purpose: "any"
                 }
             ],
             screenshots: [
@@ -123,27 +130,65 @@ export default defineNuxtConfig({
             ]
         },
         workbox: {
-            offline: true,
-            offlineAssets: [
-                '/offline.html',
-            ],
+            navigateFallback: '/offline.html',
+            mode: 'development',
+            offlineGoogleAnalytics: true,
             runtimeCaching: [
                 {
-                    urlPattern: 'https://667aca84bd627f0dcc908b53.mockapi.io/.*',
+                    urlPattern: new RegExp(`^${process.env.APP_URL}/.*`),
                     handler: 'NetworkFirst',
-                    method: 'GET',
-                    strategyOptions: {
+                    options: {
                         cacheName: 'api-cache',
                         cacheableResponse: {
-                            statuses: [0, 200]
-                        }
-                    }
-                }
-            ]
+                            statuses: [0, 200],
+                        },
+                    },
+                },
+                {
+                    urlPattern: new RegExp(`^${process.env.APP_URL}/.*`),
+                    handler: 'StaleWhileRevalidate',
+                    options: {
+                        cacheName: 'html-cache',
+                        cacheableResponse: {
+                            statuses: [0, 200],
+                        },
+                    },
+                },
+                {
+                    urlPattern: new RegExp(`^${process.env.APP_URL}/_nuxt/.*`),
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'nuxt-cache',
+                        cacheableResponse: {
+                            statuses: [0, 200],
+                        },
+                    },
+                },
+            ],
         },
         devOptions: {
             enabled: true,
             type: 'module',
         }
+    },
+    serverMiddleware: [
+        compression()
+    ],
+    build: {
+        terser: {
+            terserOptions: {
+                compress: {
+                    drop_console: true,
+                },
+            },
+        },
+        postcss: {
+            preset: {
+                autoprefixer: true,
+                cssnano: {
+                    preset: 'default',
+                },
+            },
+        },
     }
 })

@@ -11,7 +11,7 @@ const deferredPrompt = ref(null)
 onMounted(() => {
 
   window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('button')
+    console.log('beforeinstallprompt event triggered')
     e.preventDefault()
     deferredPrompt.value = e
   })

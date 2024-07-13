@@ -4,7 +4,7 @@ div
     CategorySide.category-side( :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}" :categories="UiStore.getAllCategories").mt20
     main.main-side
-      h1.ml20 Our Bestsellers
+      h2.ml20.wid200 Our Bestsellers
       SearchProducts(@changedSearch="activateSearch")
       SortingSelector(@sorting="loadProductsHome")
       div(v-if="loading").loader

@@ -824,6 +824,10 @@ h3 {
     width: 100%;
 }
 
+.wid200{
+    width: 200px;
+}
+
 .price {
     margin-bottom: 0;
 }
