@@ -9,8 +9,7 @@
       h1.ml20 Catalog
       SearchProducts(@changedSearch="activateSearch")
       SortingSelector(@sorting="loadProductsCatalog")
-      div(v-if="loading").loader
-      product-list(v-else :products="searchQueryProducts")
+      product-list(:products="searchQueryProducts")
 </template>
 
 <script setup lang="ts">

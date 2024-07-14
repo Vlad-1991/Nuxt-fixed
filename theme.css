@@ -687,12 +687,12 @@ h3 {
 }
 
 .flex-row{
-    min-width: 800px;
+    min-width: 1200px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: left;
-    margin: 0 var(--offset_one_side);
+    margin: 0 auto;
     gap: 20px;
 }
 

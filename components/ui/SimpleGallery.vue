@@ -10,7 +10,8 @@
           :data-pswp-height="image.height"
           target="_blank"
           rel="noreferrer")
-        img#first_image(v-show="!loading" :src="IMAGES_BIG + imagesData[0].largeURL" v-if="key === 0" :alt="name" width="500px" height="500px" @error="imgError" @load="loadImg")
+        nuxt-img#first_image(v-show="!loading" :src="IMAGES_BIG + imagesData[0].largeURL" v-if="key === 0"
+          :alt="name" width="500px" height="500px" @error="imgError" @load="loadImg" format="webp" quality="80")
 </template>
 
 <!-- this component render beautiful gallery with one or many product images

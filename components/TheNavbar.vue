@@ -2,7 +2,7 @@
   nav.navbar
     div(class="logo")
       nuxt-link(to="/")
-        img(src="@/assets/lamotte.png" alt="Online Store" width="140px" height="54px")
+        nuxt-img(src="lamotte.png" alt="Online Store" width="140px" height="54px" format="webp" quality="80")
       h3(class="inline") Online Store
     div.navbar-menu
       ul.navbar-menu

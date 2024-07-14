@@ -15,14 +15,15 @@ export default defineNuxtConfig({
                 autoImports: ["defineStore", "acceptHMRUpdate"],
             },
         ],
-        "@vite-pwa/nuxt"
+        "@vite-pwa/nuxt",
+        "@nuxt/image"
     ],
     imports: {
         dirs: ["stores"],
     },
     components: [
-        { path: '~/components'},
-        { path: '~/components/ui'}
+        {path: '~/components'},
+        {path: '~/components/ui'}
     ],
     autoImports: {
         dirs: [
@@ -173,5 +174,13 @@ export default defineNuxtConfig({
                 },
             },
         },
+    },
+    image: {
+        // dir: 'assets',
+         // alias: {
+         //     'images-150': 'images/150x150',
+         //     'images-500': 'images/500x500'
+         // }
+        // formats: ['image/avif', 'image/webp']
     }
 })
