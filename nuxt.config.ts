@@ -53,6 +53,9 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
+            htmlAttrs: {
+                lang: "en",
+            },
             link: [
                 {rel: "icon", type: "image/x-icon", href: "/lamotte.png"}
             ],
@@ -65,7 +68,7 @@ export default defineNuxtConfig({
             ],
             title: "Online Store",
             charset: "utf-8",
-            viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+            viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
         }
     },
     routeRules: {
@@ -143,28 +146,8 @@ export default defineNuxtConfig({
                             statuses: [0, 200],
                         },
                     },
-                },
-                {
-                    urlPattern: new RegExp(`^${process.env.APP_URL}/.*`),
-                    handler: 'StaleWhileRevalidate',
-                    options: {
-                        cacheName: 'html-cache',
-                        cacheableResponse: {
-                            statuses: [0, 200],
-                        },
-                    },
-                },
-                {
-                    urlPattern: new RegExp(`^${process.env.APP_URL}/_nuxt/.*`),
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'nuxt-cache',
-                        cacheableResponse: {
-                            statuses: [0, 200],
-                        },
-                    },
-                },
-            ],
+                }
+            ]
         },
         devOptions: {
             enabled: true,

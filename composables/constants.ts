@@ -5,6 +5,8 @@ export const ORDERS_DATABASE = 'https://667aca84bd627f0dcc908b53.mockapi.io/orde
 export const CATALOG_DATABASE = 'https://667aca84bd627f0dcc908b53.mockapi.io/catalog/'
 export const CATEGORIES_DATABASE = 'https://667c1ab53c30891b865b51cc.mockapi.io/categories'
 export const QUICK_ORDERDS_DATABASE = 'https://667c1ab53c30891b865b51cc.mockapi.io/quickorders'
+export const IMAGES_BIG = '/images/500x500/'
+export const IMAGES_THUMB = '/images/150x150/'
 
 export const classesMap = {
     Active: 'primary',

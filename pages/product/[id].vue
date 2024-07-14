@@ -201,7 +201,6 @@ const defineReviewSended = async () => {
 }
 
 try {
-  // const {data} = await load('categories', CATEGORIES_DATABASE)
   const {data, error} = await useAsyncData('categories', () => load(CATEGORIES_DATABASE))
   categories = data.value
 }catch (e: string | unknown) {

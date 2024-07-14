@@ -6,7 +6,7 @@
           nuxt-link(:to="{name: 'product-id', params: {id: product.id} }")
             h4 {{product.name}}
           div
-            img(:src="product.image[0].thumbnailURL" class="card-image" width="150px" height="150px" :alt="product.name")
+          img(:src="IMAGES_THUMB + product.image[0].thumbnailURL" class="card-image" width="150px" height="150px" :alt="product.name")
           h3 ${{product.price}}
           nuxt-link(:to="{name: 'product-id', params: {id: product.id} }")
             button.btn.danger(type="button") Read more
@@ -15,5 +15,11 @@
 <!-- this component renders all products, selected in upper component (Catalog, Home), can be sorted and filtered in upper component
  products have a visual box with name of product, main thumb image, price and button to "read more" -->
 <script setup lang="ts">
+
+// const IMAGES_THUMB = '@/assets/images/150x150/';
+
+// function getImageUrl(filename: string) {
+//   return require(IMAGES_THUMB + filename);
+// }
 const props = defineProps<{products?: [productType]}>()
 </script>
