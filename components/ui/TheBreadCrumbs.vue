@@ -14,27 +14,9 @@ const route = useRoute()
 
 let categories = []
 
+let breadcrumbs
 
 
-
-
-const cur_prod = ref({
-  name: '',
-  caturl: '',
-  subcaturl: ''
-})
-
-/* it route selected by http query has params, information about this product store in variables to be shown in breadcrumbs  */
-if (route.params.id) {
-  await getProductDetails(route.params.id)
-}
-
-/* if go to product details must be gathered for breadcrumbs */
-watch(() => route.params.id, async (newId) => {
-  if (newId) {
-    await getProductDetails(newId)
-  }
-})
 
 /* to get info from current route and put category and subcategory info to Ui Store */
 const getCategoryAndSubcategory = (categories: [categoriesType], route: RouteLocationNormalized): void => {
@@ -43,11 +25,14 @@ const getCategoryAndSubcategory = (categories: [categoriesType], route: RouteLoc
   let current_subcategory = ''
   let subcategories_array = [{}]
   categories.forEach((cat: categoriesType): void => {
+
     if (Object.keys(cat)[0] === route.query.category) {
       current_category = cat[Object.keys(cat)[0]].text
       subcategories_array = cat[Object.keys(cat)[0]].subcategory
     }
   })
+
+
 
   subcategories_array.forEach((subcat: any): void => {
     if (subcat.url === route.query.subcategory) {
@@ -57,6 +42,32 @@ const getCategoryAndSubcategory = (categories: [categoriesType], route: RouteLoc
 
   UiStore.writeCategoryInfo({cat: current_category, subcat: current_subcategory})
 }
+
+
+const cur_prod = ref({
+  name: '',
+  caturl: '',
+  subcaturl: ''
+})
+
+
+  categories = UiStore.getAllCategories
+
+
+  /* it route selected by http query has params, information about this product store in variables to be shown in breadcrumbs  */
+  if (route.params.id) {
+    await getProductDetails(route.params.id)
+  }
+
+  /* if go to product details must be gathered for breadcrumbs */
+  watch(() => route.params.id, async (newId) => {
+    if (newId) {
+      await getProductDetails(newId)
+    }
+  })
+
+
+
 
 /* generate array of all breadcrumbs elements path */
 function generateBreadcrumbs(route: RouteLocationNormalized, cur_prod: Ref<{ name: '', caturl: '', subcaturl: '' }>,
@@ -104,6 +115,7 @@ function generateBreadcrumbs(route: RouteLocationNormalized, cur_prod: Ref<{ nam
     categoriesInfo.value.cat = UiStore.getCategory;
     categoriesInfo.value.subcat = UiStore.getSubcategory;
 
+
     if (categoriesInfo.value.cat && categoriesInfo.value.subcat) {
 
       UiStore.setBreadcrumbs([
@@ -146,15 +158,7 @@ async function getProductDetails(id: string | string[]): Promise<void> {
   }
 }
 
-
-categories = UiStore.getAllCategories
-getCategoryAndSubcategory(categories, route)
-
 const capitalize = (string: string) => string[0].toUpperCase() + string.slice(1);
 
-let breadcrumbs = computed((): breadcrumbsArrayType[] | undefined => generateBreadcrumbs(route, cur_prod, categories))
-
-
-
-
+breadcrumbs = computed((): breadcrumbsArrayType[] | undefined => generateBreadcrumbs(route, cur_prod, categories))
 </script>
