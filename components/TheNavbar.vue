@@ -19,14 +19,17 @@
           button.btn.main.mr20(type="button") Sign In
         nuxt-link(:to="{name: 'signup'}")
           button.btn.white.mr20(type="button") Sign Up
+        nuxt-link(:to="{name: 'cart'}" class="main")
+          fas(icon="shopping-cart" size="lg")
+          span(class="cart-count") {{CartStore.getCartCount}}
       div(v-else)
         nuxt-link(:to="{name: 'dashboard'}" class="main").mr20
           fas(icon="user" size="lg")
         //nuxt-link(:to="{name: 'index'}" @click="AuthStore.logout")
         button.btn.white.mr20(type="button" @click="AuthStore.logout") Logout
-      nuxt-link(:to="{name: 'cart'}" class="main")
-        fas(icon="shopping-cart" size="lg")
-        span(class="cart-count") {{CartStore.getCartCount}}
+      //nuxt-link(:to="{name: 'cart'}" class="main")
+      //  fas(icon="shopping-cart" size="lg")
+      //  span(class="cart-count") {{CartStore.getCartCount}}
 </template>
 
 <!-- this is navbar - rendered once on main layout to navigate to all routes, except checkout and specific category query

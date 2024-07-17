@@ -4,7 +4,7 @@
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
     main.main-side
-      h1.ml20 Checkout
+      h2.ml20 Checkout
       div(v-if="firstStep")
         table(class="table")
           thead

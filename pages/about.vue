@@ -4,7 +4,7 @@
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
     main.main-side
-      h1.ml20 About Us
+      h2.ml20 About Us
 </template>
 
 <!-- Component About Us - contains general info about Online Store (to add more details in future) -->

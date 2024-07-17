@@ -6,7 +6,7 @@
       :categories="UiStore.getAllCategories"
       :style="{left: UiStore.sidebar}").mt20
     main.main-side
-      h1.ml20 Catalog
+      h2.ml20 Catalog
       SearchProducts(@changedSearch="activateSearch")
       SortingSelector(@sorting="loadProductsCatalog")
       product-list(:products="searchQueryProducts")

@@ -24,7 +24,7 @@
           th Comment
           th Post Service
         tbody
-          tr(v-for="(order, index) in orders" :key="order.id")
+          tr.order-item(v-for="(order, index) in orders" :key="order.id")
             td {{ order.id }}
             td {{ order.date }}
             td
@@ -37,6 +37,34 @@
               button.btn.danger(v-if="order.status !=='Canceled'" type="button" @click="cancelOrder(order.id, order)") Cancel
             td {{order.comment}}
             td {{order.postService}}
+      div.vertical-table(v-if='orders.length > 0 && !loader')
+        div.order-item(v-for='(order, index) in orders' :key='order.id')
+          div.order-row
+            div.order-cell
+              strong #:
+              |  {{ order.id }}
+            div.order-cell
+              strong Order Date:
+              |  {{ order.date }}
+            div.order-cell
+              strong Products:
+              ul.product-list
+                li(v-for='product in order.products.products')
+                  | {{ product.name }}, {{ product.qty }} pcs
+            div.order-cell
+              strong Total:
+              |  ${{ order.products.total }}
+            div.order-cell
+              strong Status:
+              span(:class='classesMap[order.status]') {{ order.status }}
+            div.order-cell(v-if="order.status !== 'Canceled'")
+              button.btn.danger(type='button' @click='cancelOrder(order.id, order)') Cancel
+            div.order-cell
+              strong Comment:
+              |  {{ order.comment }}
+            div.order-cell
+              strong Post Service:
+              |  {{ order.postService }}
       h3(v-else) There are no any orders yet
     main.main-side.ml20(v-if="settings" )
       h3 My Settings

@@ -4,7 +4,7 @@
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
     main.main-side
-      h1.ml20 Cart
+      h2.ml20 Cart
       h3(v-if="CartStore.getCartCount === 0") Cart is empty, please add some products first
       div(v-else)
         ul.list
