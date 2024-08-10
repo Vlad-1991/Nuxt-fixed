@@ -7,7 +7,6 @@ div
       h2.ml20.wid200.mb50 Our Bestsellers
       SearchProducts(@changedSearch="activateSearch")
       SortingSelector(@sorting="loadProductsHome")
-      //div(v-if="loading").loader
       product-list(:products="searchQueryProducts")
 </template>
 

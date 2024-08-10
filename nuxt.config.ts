@@ -8,6 +8,13 @@ export default defineNuxtConfig({
         }
     },
     devtools: {enabled: true},
+    css: ['~/assets/css/main.css', '~/theme.css'],
+    postcss: {
+        plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+        }
+    },
     modules: [
         [
             "@pinia/nuxt",
@@ -32,7 +39,6 @@ export default defineNuxtConfig({
             'utils/types'
         ],
     },
-    css: ['~/theme.css'],
     plugins: [
         '~/plugins/fontawesome.ts'
     ],
