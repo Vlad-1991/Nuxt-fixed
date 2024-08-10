@@ -1,6 +1,6 @@
 <template lang="pug">
   div.card.alert.danger
-    h3.center.red {{UiStore.getErrorMessage}}
+    h3(class="text-center mx-auto red") {{UiStore.getErrorMessage}}
 </template>
 
 <!-- Component to show error from server side if exist -->

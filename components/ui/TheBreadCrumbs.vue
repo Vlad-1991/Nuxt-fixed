@@ -8,15 +8,12 @@
 <!-- simple component to render row of breadcrumbs from current route
 , which contains links to all levels of route -->
 <script setup lang="ts">
-import {load} from "@/services/api/requests";
 const UiStore = useUiStore()
 const route = useRoute()
 
 let categories = []
 
 let breadcrumbs
-
-
 
 /* to get info from current route and put category and subcategory info to Ui Store */
 const getCategoryAndSubcategory = (categories: [categoriesType], route: RouteLocationNormalized): void => {
@@ -31,8 +28,6 @@ const getCategoryAndSubcategory = (categories: [categoriesType], route: RouteLoc
       subcategories_array = cat[Object.keys(cat)[0]].subcategory
     }
   })
-
-
 
   subcategories_array.forEach((subcat: any): void => {
     if (subcat.url === route.query.subcategory) {
@@ -52,7 +47,6 @@ const cur_prod = ref({
 
 
   categories = UiStore.getAllCategories
-
 
   /* it route selected by http query has params, information about this product store in variables to be shown in breadcrumbs  */
   if (route.params.id) {

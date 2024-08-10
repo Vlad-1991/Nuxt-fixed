@@ -2,25 +2,25 @@
   div
     div(class="modal-backdrop")
     div.modal
-      div.float-right(@click="emit('close')") X
+      div.float-right.text-xl.cursor-pointer(@click="emit('close')") X
       div(v-if="!orderSended")
         h3(v-if="title") {{ title }}
-        div.mb50
-          div(class="form-control" :class="{invalid: phone.error}")
+        div(class="mb-[50px]")
+          div(class="form-control mt-[20px]" :class="{invalid: phone.error}")
             label(for="phone")  *Phone
             input(type="tel"
               placeholder="123-456-7890" id="phone" v-model.trim="phone.val" @input="validateField(phone)")
             small(v-if="phone.error")  {{phone.error}}
 
-          div(class="form-control" :class="{invalid: name.error}")
+          div(class="form-control mt-[20px]" :class="{invalid: name.error}")
             label(for="name")  *Full Name
             input(type="text"
               placeholder="John Doe" id="name" v-model.trim="name.val" @input="validateField(name)")
             small(v-if="name.error")  {{name.error}}
-        div.mt10
+        div(class="mt-[10px]")
           button.primary.btn(@click="sendQuickOrder" :disabled="!(name.valid && phone.valid)" type="button") Order Now
-      div.mt50(v-else)
-        div.mb20 Customer Service Team will call you soon as possible, thanks for order
+      div(class="mt-[50px]" v-else)
+        div(class="mb-[20px]") Customer Service Team will call you soon as possible, thanks for order
         button.primary.btn.block.center(@click="emit('close')") Ok
 </template>
 

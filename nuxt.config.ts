@@ -140,7 +140,7 @@ export default defineNuxtConfig({
             ]
         },
         workbox: {
-            navigateFallback: '/offline.html',
+            // navigateFallback: '/offline.html',
             mode: 'development',
             offlineGoogleAnalytics: true,
             runtimeCaching: [
@@ -172,21 +172,8 @@ export default defineNuxtConfig({
                 },
             },
         },
-        postcss: {
-            preset: {
-                autoprefixer: true,
-                cssnano: {
-                    preset: 'default',
-                },
-            },
-        },
     },
     image: {
-        // dir: 'assets',
-         // alias: {
-         //     'images-150': 'images/150x150',
-         //     'images-500': 'images/500x500'
-         // }
-        // formats: ['image/avif', 'image/webp']
+
     }
 })

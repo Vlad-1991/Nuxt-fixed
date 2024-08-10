@@ -2,10 +2,10 @@
   div
     div(class="modal-backdrop")
     div.modal
-      h3.center.mb50(v-if="title") {{ title }}
-      div.center.mb50
+      h3(class="text-center mx-auto mb-[50px]" v-if="title") {{ title }}
+      div(class="text-center mx-auto mb-[50px]")
         slot
-      div.center.mt10
+      div(class="text-center mx-auto mt-[10px]")
         button.primary.btn(@click="returnToCatalog()" type="button") Ok
 </template>
 

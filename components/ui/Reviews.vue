@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     h1 Reviews
-    div.reviews-back.mb20(@click="emit('backToProduct')") Back to Product
+    div.reviews-back(class="mb-[20px]" @click="emit('backToProduct')") Back to Product
     div.flex-reviews
       div.reviews-50
         div.card-flex.review-card(v-for="review in reviews")
@@ -12,7 +12,7 @@
         div(v-if="reviewSended")
           h3 You have already left a review or rating on this product
         div(v-else)
-          div.mb10.rating-star Push your rating
+          div(class="mb-[10px] rating-star") Push your rating
           span.rating-star
             input(type="radio" id="0stars" value="0" v-model="ratingVote")
             label(for="0stars")  0
@@ -31,13 +31,13 @@
           span.rating-star
             input(type="radio" id="0stars" value="5" v-model="ratingVote")
             label(for="5stars")  5
-          div.mt10.rating-star
+          div(class="mt-[10px]").rating-star
             label(for="review-area") Your review for this product (Optional)
-            textarea.review-textarea.mt10(placeholder="Write review... 300 symbols max" id="review-area" v-model="reviewText" )
-          button.btn.main.mt10(:disabled="!ratingVote" @click="emit('sendReview', {reviewText: reviewText, ratingVote: ratingVote})"
+            textarea.review-textarea(class="mt-[10px]" placeholder="Write review... 300 symbols max" id="review-area" v-model="reviewText" )
+          button.btn.main(class="mt-[10px]" :disabled="!ratingVote" @click="emit('sendReview', {reviewText: reviewText, ratingVote: ratingVote})"
           type="button") Send review
       div(v-else)
-        span.mr10 To send rating and review please
+        span(class="mr-[10px]") To send rating and review please
         nuxt-link(:to="{name: 'signin'}")
           button.btn.main(type="button") Sign In
 </template>

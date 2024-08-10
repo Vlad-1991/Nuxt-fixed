@@ -1,9 +1,9 @@
 <template lang="pug">
   div.wrapper
     TheNavbar
-    div.container.with-nav.mb50
-      TheBreadCrumbs.breadcrumbs.mt20(v-if="catLoaded")
-      ErrorMessage.mt20(v-if="UiStore.getErrorMessage")
+    div.container.with-nav(class="mb-[50px]")
+      TheBreadCrumbs.breadcrumbs(class="mt-[20px]" v-if="catLoaded")
+      ErrorMessage(class="mt-[20px]" v-if="UiStore.getErrorMessage")
       AddToHomeScreen
       NuxtPage
       slot
@@ -31,8 +31,4 @@ onMounted(async () => {
 async function cartInit() {
   await CartStore.getCart();
 }
-
-
-// loadCategoriesToStore()
-
 </script>

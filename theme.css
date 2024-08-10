@@ -160,8 +160,7 @@ h6 {
 }
 
 .container {
-    margin: 0 auto;
-   /* width: 1200px;*/
+    @apply mx-auto;
 }
 
 
@@ -185,7 +184,6 @@ h6 {
 
 .auth {
     width: 500px;
-
 }
 
 .pt-2 {
@@ -216,7 +214,7 @@ h6 {
     width: 100%;
     color: #2c3e50;
     padding: 0.5rem 1.5rem;
-    border-radius: 3px;
+    border-radius: 10px;
     font-size: 1rem;
     resize: none;
 }
@@ -469,6 +467,7 @@ h6 {
     list-style: none;
     display: flex;
     align-items: center;
+
 }
 
 .navbar-menu li {
@@ -593,10 +592,8 @@ h6 {
 }
 
 .breadcrumbs {
-    /*z-index: 5000;*/
-    position: relative;
-    left: 10px;
-    margin-top: .5rem;
+    @apply relative left-[10px] mt-2 mb-10;
+
 }
 
 .filter {
@@ -669,9 +666,7 @@ h6 {
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    column-gap: 10px;
+    @apply flex items-center gap-x-[10px];
 }
 
 .main {
@@ -721,13 +716,8 @@ h6 {
 }
 
 .wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    background-color: white;
-    margin: 0;
-    overflow-x: hidden;
+    @apply relative flex flex-col p-0 bg-white m-0 overflow-x-hidden;
+    width: 100%;
 }
 
 .flex-row{
@@ -759,6 +749,7 @@ h6 {
     justify-content: space-between;
     align-items: center;
     column-gap: 10px;
+    padding: 0 10px;
 
     h3, div, a{
         margin: 10px;
@@ -766,7 +757,7 @@ h6 {
     button{
         margin: auto 10px 10px;
     }
-    padding: 0 10px;
+
 
 }
 
@@ -909,11 +900,11 @@ h6 {
     margin: 0 auto;
 }
 
-.float-right{
-    float: right;
-    font-size: 20px;
-    cursor: pointer;
-}
+/*.float-right{*/
+/*    float: right;*/
+/*    font-size: 20px;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .button-cat {
     font-size: 1.5rem;
@@ -965,17 +956,11 @@ fieldset {
 }
 
 .reviews-back {
-    font-weight: normal;
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
+    @apply font-normal text-blue-500 underline cursor-pointer;
 }
 
 .link{
-    font-weight: normal;
-    color: blue;
-    text-decoration: underline;
-    cursor: pointer;
+    @apply font-normal text-blue-500 underline cursor-pointer;
 }
 
 .link:hover{
@@ -1005,10 +990,7 @@ fieldset {
 }
 
 .flex-reviews{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    column-gap: 20px;
+    @apply flex flex-row flex-nowrap gap-[20px];
 }
 
 .reviews-50 {
@@ -1121,9 +1103,7 @@ fieldset {
 }
 
 .searchquery {
-    width: 100%;
-    display: block;
-    padding-right: 20px;
+    @apply w-full block pr-[20px];
 }
 
 .toggle-button {
@@ -1171,8 +1151,7 @@ fieldset {
 }
 
 .footer-social{
-    display: flex;
-    column-gap: 30px;
+    @apply flex gap-[30px];
 }
 
 .footer-social img{
@@ -1217,7 +1196,6 @@ fieldset {
 
     div.navbar-menu {
         width: 100%;
-        /*gap: 1.5rem;*/
         padding-left: 0;
         justify-content: space-between;
     }

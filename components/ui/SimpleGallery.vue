@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     div(:id="galleryID")
-      div(v-if="loading").loader.img_size
+      div(v-if="loading").loader
       a(
           v-for="(image, key) in imagesData"
           :key="key"

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.mb20.form-control.searchquery
+  div(class="mb-[20px]").form-control.searchquery
     label(for="search") Search products:
     input(type="text" id="search" v-model="searchQuery" @input="emit('changedSearch', searchQuery)")
 </template>

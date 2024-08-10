@@ -1,7 +1,7 @@
 <template lang="pug">
   aside
-    h1.mt50 Categories
-    ul(class="list list-default" v-if="categories" )
+    h1(class="mt-[50px]") Categories
+    ul(class="list-none ml-[20px]" v-if="categories" )
       li(v-for="(category, index) in categories" :key="categories[index]" class="li-border")
         div.categories-flex
           nuxt-link.category.inline-block.w100.li-highlight(:to="{name: 'catalog', query: {category: Object.keys(category)[0]}}"
@@ -9,29 +9,18 @@
             @click="emit('showCategory', {cat: Object.keys(category)[0]})") {{category[Object.keys(category)[0]].text}}
           span.button-cat(:class="switched[index] ? 'opened' : 'closed'" @click="switchCatButton(index)") ^
 
-        li.subcat.li-highlight(v-if="switched[index]" v-for="subcat in category[Object.keys(category)[0]].subcategory" :key="subcat.url")
+        li(class="ml-[20px] li-highlight" v-if="switched[index]" v-for="subcat in category[Object.keys(category)[0]].subcategory" :key="subcat.url")
           nuxt-link.category.block.w100.li-highlight(:to="{name: 'catalog', query: {category: Object.keys(category)[0], subcategory: subcat.url} }"
             :class="route.query.subcategory === subcat.url ? 'active_category' : ''"
             @click="emit('showSubCategory', {cat: Object.keys(category)[0], subcat: subcat.url})") {{subcat.text}}
 
-      li.show-bestseller(v-if="checkboxBestSeller")
+      li(class="mt-[50px]" v-if="checkboxBestSeller")
         input(type="checkbox" id="bestseller" @click="toShowBestSellers")
         label(for="bestseller") Bestseller
 </template>
 
 <script setup lang="ts">
-// onMounted(() => {
-//   const UiStore = useUiStore()
-//   let route = useRoute()
-//   const categories = ref([])
-//
-//   categories.value = UiStore.getAllCategories
-// })
 const route = useRoute()
-
-
-// console.log(UiStore.getAllCategories)
-
 
 const emit = defineEmits(['showBestSellers', 'showCategory', 'showSubCategory'])
 

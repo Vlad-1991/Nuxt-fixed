@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.form-control.w20.mb20
+  div.form-control.w20(class="mb-[20px]")
     label(for="sorting") Sort By:
     select(id="sorting" @change="$emit('sorting', $event.target.value)")
       option(disabled selected value) -- select an option --

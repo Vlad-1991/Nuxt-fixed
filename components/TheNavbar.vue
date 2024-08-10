@@ -1,6 +1,6 @@
 <template lang="pug">
   nav.navbar
-    div(class="logo")
+    div.logo
       nuxt-link(to="/")
         nuxt-img(src="lamotte.png" alt="Online Store" width="140px" height="54px" format="webp" quality="80")
       h3(class="inline") Online Store
@@ -25,11 +25,7 @@
       div(v-else)
         nuxt-link(:to="{name: 'dashboard'}" class="main").mr20
           fas(icon="user" size="lg")
-        //nuxt-link(:to="{name: 'index'}" @click="AuthStore.logout")
         button.btn.white.mr20(type="button" @click="AuthStore.logout") Logout
-      //nuxt-link(:to="{name: 'cart'}" class="main")
-      //  fas(icon="shopping-cart" size="lg")
-      //  span(class="cart-count") {{CartStore.getCartCount}}
 </template>
 
 <!-- this is navbar - rendered once on main layout to navigate to all routes, except checkout and specific category query
