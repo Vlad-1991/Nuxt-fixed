@@ -2,19 +2,19 @@
   form(class="card" @submit.prevent)
     h1 Sign In
 
-    div(:class="['form-control', 'mb10', {invalid: auth[0].error}]")
+    div(:class="['form-control', 'mb-[10px]', {invalid: auth[0].error}]")
       label(for="email") {{auth[0].label}}
       input(type="email" id="email" v-model.trim="auth[0].val" @input="validateFieldWithIndex(auth, 0)")
       small(v-if="auth[0].error") {{auth[0].error}}
 
-    div(:class="['form-control', 'mb10', {invalid: auth[1].error}]")
+    div(:class="['form-control', 'mb-[10px]', {invalid: auth[1].error}]")
       label(for="password") {{auth[1].label}}
       input(type="password" id="password" v-model.trim="auth[1].val" @input="validateFieldWithIndex(auth, 1)")
       small(v-if="auth[1].error") {{auth[1].error}}
 
-    button(class="btn main mt10" type="sumbit" :disabled="!validatedAuth" @click="SignIn") Sign In
+    button(class="btn main mt-[10px]" type="sumbit" :disabled="!validatedAuth" @click="SignIn") Sign In
     h4.danger(v-if="error") Invalid login or password
-    div.mt10
+    div(class="mt-[10px]")
       nuxt-link(:to="{path: '/forgotpassword'}" tag="div")
         small.link Forgot Password?
       nuxt-link.block(:to="{path: '/signup'}" tag="div")

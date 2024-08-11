@@ -3,12 +3,12 @@
   form(class="card" @submit.prevent)
     h1 Sign Up
 
-    div(:class="['form-control', 'mb10', {invalid: auth[0].error}]")
+    div(:class="['form-control', 'mb-[10px]', {invalid: auth[0].error}]")
       label(for="email") {{auth[0].label}}
       input(type="email" id="email" v-model.trim="auth[0].val" @input="validateFieldWithIndex(auth, 0)" maxlength="40")
       small(v-if="auth[0].error") {{auth[0].error}}
 
-    div(:class="['form-control', 'mb10', {invalid: auth[1].error}]")
+    div(:class="['form-control', 'mb-[10px]', {invalid: auth[1].error}]")
       label(for="fullname") {{auth[1].label}}
       input(type="text" id="fullname" v-model.trim="auth[1].val" @input="validateFieldWithIndex(auth, 1)" maxlength="40")
       small(v-if="auth[1].error") {{auth[1].error}}
@@ -32,17 +32,17 @@
       label(for="phone")  {{auth[5].label}}
       input(type="tel" placeholder="123-456-7890" id="phone" v-model.trim="auth[5].val")
 
-    div(:class="['form-control', 'mb10', {invalid: auth[6].error}]")
+    div(:class="['form-control', 'mb-[10px]', {invalid: auth[6].error}]")
       label(for="password") {{auth[6].label}}
       input(type="password" id="password" v-model.trim="auth[6].val" @input="validateFieldWithIndex(auth, 6)" maxlength="10")
       small(v-if="auth[6].error") {{auth[6].error}}
 
-    div(:class="['form-control', 'mb10', {invalid: auth[7].error}]")
+    div(:class="['form-control', 'mb-[10px]', {invalid: auth[7].error}]")
       label(for="passwordRepeat") {{auth[7].label}}
       input(type="password" id="passwordRepeat" v-model.trim="auth[7].val" @input="validateMatchingPassword()" maxlength="10")
       small(v-if="auth[7].error") {{auth[7].error}}
 
-    button(class="btn main mt10" type="sumbit" :disabled="!validatedAuth" @click="SignUp") Sign Up
+    button(class="btn main mt-[10px]" type="sumbit" :disabled="!validatedAuth" @click="SignUp") Sign Up
 
     teleport(to="body")
       AppModal(v-if="modal" title="Activate your profile" @close="modal = false") You successfully created account with email {{auth[0].val}}

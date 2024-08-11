@@ -4,7 +4,7 @@
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
 
-    main.main-side.ml20(v-if="!settings")
+    main.main-side(class="ml-[20px]" v-if="!settings")
       h1 Hello, {{AuthStore.userName}}!
       h4.link(@click="showSettings") My Settings
       h3 My Promo Codes:
@@ -14,7 +14,7 @@
       div.loader(v-if="loader")
       table.table(v-if="orders.length > 0 && !loader" )
         thead
-        tr.center
+        tr.text-center
           th  #
           th  Order Date
           th  Products
@@ -29,7 +29,7 @@
             td {{ order.date }}
             td
               ul(v-for="product in order.products.products")
-                li.left  {{product.name}}, {{product.qty}} pcs
+                li.text-left  {{product.name}}, {{product.qty}} pcs
             td ${{order.products.total}}
             td
               span.badge(:class="classesMap[order.status]")  {{ order.status }}
@@ -66,18 +66,18 @@
               strong Post Service:
               |  {{ order.postService }}
       h3(v-else) There are no any orders yet
-    main.main-side.ml20(v-if="settings" )
+    main.main-side(class="ml-[20px]" v-if="settings")
       h3 My Settings
       h4.link(@click="settings = false") Back to Dashboard
       div.cart_flex.dashboard-settings
-        form.half-width
+        form(class="w-1/2")
 
           div(class="form-control" :class="{invalid: adress[4].error}")
             label(for="full_name")  {{adress[4].label}}
             input(type="text" id="full_name" placeholder="John Doe" v-model.trim="adress[4].val" @input="validateFieldWithIndex(adress, 4)")
             small(v-if="adress[4].error")  {{adress[4].error}}
 
-          div.mt20(class="form-control")
+          div(class="form-control mt-[20px]")
             label(for="country") Country
             select(id="country" v-model="adress[0].val" @change="validateChecked(adress, 0)")
               option(value="usa")  United States
@@ -102,7 +102,7 @@
           button.btn.main(:disabled="!validateSettings" @click="updateUserOnServer") Save
         p(v-if="updated") Your profile has been updated
 
-        form.half-width
+        form(class="w-1/2")
           div(:class="['form-control', 'mb10', {invalid: password[0].error}]")
             label(for="newpassword") {{password[0].label}}
             input(type="password" id="newpassword" v-model.trim="password[0].val" @input="validateFieldWithIndex(password, 0)" maxlength="10")

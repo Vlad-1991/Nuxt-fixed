@@ -4,7 +4,7 @@
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
     main.main-side
-      h2.ml20 Checkout
+      h2(class="ml-[20px]") Checkout
       div(v-if="firstStep")
         table(class="table")
           thead
@@ -16,20 +16,20 @@
             th  Sum
           tbody
             tr(v-for="(product, index) in products" :key="product.id")
-              td.td-left {{ ++index }}
-              td.td-left {{ product.name }}
-              td.td-left  {{ product.qty }}
-              td.td-left  $ {{ product.price }}
-              td.td-left  $ {{ (product.qty * parseFloat(product.price)).toFixed(2) }}
+              td {{ ++index }}
+              td {{ product.name }}
+              td  {{ product.qty }}
+              td  $ {{ product.price }}
+              td  $ {{ (product.qty * parseFloat(product.price)).toFixed(2) }}
         h3(v-if="promoPrice") Summary: ${{promoPrice}}
-        h3(v-else) Summary: ${{CartStore.getSummary.toFixed(2)}}
+        h3(v-else class="mb-[20px]") Summary: ${{CartStore.getSummary.toFixed(2)}}
         h3 Use your Promo Code:
-        div.form-control.promo.mb20
+        div(class="mb-[50px]").form-control.promo
           input.promo-field(type="text" id="adress" placeholder="" v-model.trim="promo" @input="checkPromo")
           h3.red(v-if="promoMessage") {{promoMessage}}
-        input.package.mr10(type="checkbox" v-model="sep_package")
+        input.package(class="mr-[10px]" type="checkbox" v-model="sep_package")
         span.package Add separate package box for each product
-        div.right
+        div.text-right
           button.btn.primary(@click="toSecondStep" type="button") Next
 
       div(v-else-if="secondStep")

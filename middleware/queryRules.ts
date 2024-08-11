@@ -16,13 +16,4 @@ export default defineNuxtRouteMiddleware((to, from) => {
             });
         }
     }
-    // if (process.client) {
-    //
-    //     if (AuthStore.getToken && (to.name === 'signin' || to.name === 'signup' || to.name === 'forgotpassword')) {
-    //         return navigateTo({
-    //             name: 'index',
-    //             replace: true
-    //         })
-    //     }
-    // }
 })

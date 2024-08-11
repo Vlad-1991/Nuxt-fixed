@@ -2,9 +2,9 @@
 div
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side( :checkboxBestSeller="UiStore.getCheckboxBestSeller"
-      :style="{left: UiStore.sidebar}" :categories="UiStore.getAllCategories").mt20
+      :style="{left: UiStore.sidebar}" :categories="UiStore.getAllCategories" class="mt-[20px]")
     main.main-side
-      h2.ml20.wid200.mb50 Our Bestsellers
+      h2(class="ml-[20px] w-[200px] mb-[50px]") Our Bestsellers
       SearchProducts(@changedSearch="activateSearch")
       SortingSelector(@sorting="loadProductsHome")
       product-list(:products="searchQueryProducts")

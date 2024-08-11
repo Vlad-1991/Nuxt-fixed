@@ -4,7 +4,7 @@
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
       :style="{left: UiStore.sidebar}").mt20
     main.main-side
-      h2.ml20 Help
+      h2(class="ml-[20px]") Help
 </template>
 
 <!-- Component Help - contains useful topics about Online Store handling (to add more details in future) -->

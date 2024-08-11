@@ -3,7 +3,7 @@
     h1 Please enter email
     div.mb10 We will send your password to your email
 
-    div(:class="['form-control', 'mb10', {invalid: auth[0].error}]")
+    div(:class="['form-control', 'mb-[10px]', {invalid: auth[0].error}]")
       input(type="email" id="email" v-model.trim="auth[0].val" @input="validateFieldWithIndex(auth, 0)")
       small(v-if="auth[0].error") {{auth[0].error}}
 

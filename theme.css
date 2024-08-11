@@ -51,7 +51,6 @@ input {
 }
 
 a {
-    /*color: #3eaf7c;*/
     color: var(--main-grey);
     font-weight: 500;
     text-decoration: none;
@@ -490,10 +489,7 @@ h6 {
 }
 
 .badge {
-    font-size: 1rem;
-    border: 1px solid #eee;
-    border-radius: 15px;
-    padding: 0 .5rem;
+    @apply text-base border border-gray-200 rounded-lg px-2;
 }
 
 .badge.primary {
@@ -529,21 +525,15 @@ h6 {
 
 
 .order-item {
-    margin-bottom: 20px;
-    border: 1px solid black;
-
-    padding: 10px;
+    @apply mb-[20px] border border-black p-[10px];
 }
 
 .order-row {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
+    @apply flex flex-wrap flex-col;
 }
 
 .order-cell {
-    flex: 1;
-    padding: 5px;
+     @apply flex-1 p-1.5;
 }
 
 .product-list {
@@ -565,12 +555,8 @@ h6 {
 }
 
 .table {
-    width: 100%;
-    border-collapse: collapse;
+    @apply w-full border-collapse border my-5 mr-5 py-5;
     border: 1px solid var(--main-grey);
-    margin: 20px 0;
-    margin-right: 20px;
-    padding: 20px 0;
 }
 
 .table th {
@@ -691,11 +677,7 @@ h6 {
 }
 
 .main-side {
-    width: 100%;
-    position: relative;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: left;
+    @apply w-full relative pl-2.5 pr-2.5 text-left;
 }
 
 .footer {
@@ -818,15 +800,14 @@ h6 {
 }
 
 .flex-box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 20px;
+    @apply flex flex-col items-start gap-[20px];
 }
 
 .btn_cart {
     min-width: 2rem;
     min-height: 2rem;
+    border: 1px solid;
+    border-radius: 5px;
     background-color: transparent;
     border-color: var(--main-grey);
 }
@@ -834,8 +815,8 @@ h6 {
 .btn_cart_input {
     min-width: 2rem;
     min-height: 2rem;
-    border-left: none;
-    border-right: none;
+    border: 1px solid;
+    border-radius: 5px;
     border-color: var(--main-grey);
     text-align: center;
 }
@@ -864,7 +845,7 @@ h6 {
 }
 
 .price {
-    margin-bottom: 0;
+    /*margin-bottom: 0;*/
 }
 
 .price_sum {
@@ -883,9 +864,6 @@ h6 {
     display: inline-block;
 }
 
-.block {
-    display: block;
-}
 
 .right {
     text-align: right;
@@ -921,11 +899,10 @@ h6 {
 .btn_inline_block {
     display: inline-block;
     float: right;
-
 }
 
 .form-checkout{
-    margin: 20px auto;
+    @apply my-[20px] mx-auto;
 }
 
 .package{
@@ -948,11 +925,8 @@ fieldset {
 }
 
 .reviews {
-    margin-left: 20px;
-    font-weight: normal;
+    @apply ml-[20px] font-normal underline cursor-pointer;
     color: blue;
-    text-decoration: underline;
-    cursor: pointer;
 }
 
 .reviews-back {
@@ -977,7 +951,7 @@ fieldset {
 }
 
 .reviews-block {
-    margin-top: 50px;
+   @apply mt-[50px];
 }
 
 .review-card {
@@ -1163,7 +1137,7 @@ fieldset {
 }
 
 .promo-field {
-    width: 200px;
+   @apply w-[200px];
 }
 
 .half-width{

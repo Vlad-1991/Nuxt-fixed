@@ -6,15 +6,15 @@
     main.main-side(v-if="dataLoaded")
       div(v-if="!showReviews")
         div.product(v-if="product")
-          h1.ml20 {{ product.name }}
-          div.rating Rating {{product.rating}} of {{MAX_RATING}}
+          h1(class="ml-[20px]") {{ product.name }}
+          div.font-bold Rating {{product.rating}} of {{MAX_RATING}}
             span.reviews(@click="showReviews = true") {{product.reviews.length}} Reviews
           div.image_card
             div
               SimpleGallery#gallery( galleryID="my-test-gallery-primary" :images="product.image" class="card-image"
                 :name="product.name")
             div.flex-box
-              h2.price ${{product.price}}
+              h2 ${{product.price}}
               div
                 button.btn_cart(@click="decrease" type="button") -
                 input.btn_cart_input(type="number" min="1" max="100" step="1" pattern="[0-9]{3}" v-model="cart_qty" @input="onInput($event.target.value)")
@@ -24,9 +24,9 @@
                 h3.inline-block.price_sum(v-if="cart_qty > 1") Summary: ${{(cart_qty * parseFloat(product.price)).toFixed(2)}}
                 h3.inline-block(v-if="message_overload") Max count of this position is 100
                 h3.primary.inline-block(v-if="product_added") Product added to Cart
-                button.btn.orange.add_to_cart.block.mt20(@click="modal = true" type="button") Buy Now
-          div.description(v-html="product.description")
-        div.ml20.center(v-else)
+                button.btn.orange.add_to_cart(class="mt-[20px] block" @click="modal = true" type="button") Buy Now
+          div(v-html="product.description")
+        div(class="ml-[20px] text-center mx-auto")(v-else)
           h1 There are no this product
           nuxtLink.link(:to="{name: 'catalog'}") Back to Catalog
       div.reviews-block(v-else)
@@ -209,24 +209,26 @@ try {
 }
 
 try {
-  // const {data} = await load('single_product', CATALOG_DATABASE + route.params.id)
   const {data, error} = await useAsyncData('single_product', () => load(CATALOG_DATABASE + route.params.id))
   product.value = data.value
- // await defineReviewSended()
   dataLoaded.value = true
   writeCategoryAndSubcategory()
 }catch (e: string | unknown){
   UiStore.setErrorMessage(e.message)
 }
 
-useHead({
-  title: product.value.name,
-  meta: [
-    { name: "description", content: product.value.description },
-    { property: "og:description", content: product.value.description },
-    { property: "og:image", content: product.value.image[0].thumbnailURL },
-    { name: "twitter:card", content: product.value.name },
-  ],
-})
+if(product.value){
+  useHead({
+    title: product.value.name,
+    meta: [
+      { name: "description", content: product.value.description },
+      { property: "og:description", content: product.value.description },
+      { property: "og:image", content: product.value.image[0].thumbnailURL },
+      { name: "twitter:card", content: product.value.name },
+    ],
+  })
+}
+
+
 
 </script>
