@@ -203,6 +203,8 @@ const defineReviewSended = async () => {
 try {
   const {data, error} = await useAsyncData('categories', () => load(CATEGORIES_DATABASE))
   categories = data.value
+  await loadCategoriesToStore()
+
 }catch (e: string | unknown) {
 
   UiStore.setErrorMessage(e.message)

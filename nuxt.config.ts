@@ -140,21 +140,7 @@ export default defineNuxtConfig({
             ]
         },
         workbox: {
-            // navigateFallback: '/offline.html',
-            mode: 'development',
-            offlineGoogleAnalytics: true,
-            runtimeCaching: [
-                {
-                    urlPattern: new RegExp(`^${process.env.APP_URL}/.*`),
-                    handler: 'NetworkFirst',
-                    options: {
-                        cacheName: 'api-cache',
-                        cacheableResponse: {
-                            statuses: [0, 200],
-                        },
-                    },
-                }
-            ]
+            importScripts: ['service-worker.js']
         },
         devOptions: {
             enabled: true,
