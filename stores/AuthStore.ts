@@ -1,9 +1,6 @@
 import {load, updateUser} from "~/services/api/requests";
 import {getEmailFromToken} from "~/services/api/auth";
 
-// const encode = (email: string): string => {
-//     return email.replace(/[@.]/g, '_');
-// }
 
 export const useAuthStore = defineStore("AuthStore", {
     /* by default user isnt authorized */

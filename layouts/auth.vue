@@ -1,6 +1,6 @@
 <template lang="pug">
   div.auth-container
-    div.auth
+    div(class="w-[500px]")
       NuxtPage
 </template>
 

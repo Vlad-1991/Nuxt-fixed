@@ -16,9 +16,9 @@
           nuxt-link(:to="{name: 'about'}") About Us
       div(v-if="!AuthStore.isAuthentificated")
         nuxt-link(:to="{name: 'signin'}")
-          button.btn.main.mr20(type="button") Sign In
+          button.btn.main(class="mr-[20px]" type="button") Sign In
         nuxt-link(:to="{name: 'signup'}")
-          button.btn.white.mr20(type="button") Sign Up
+          button.btn.white(class="mr-[20px]" type="button") Sign Up
         nuxt-link(:to="{name: 'cart'}" class="main")
           fas(icon="shopping-cart" size="lg")
           span(class="cart-count") {{CartStore.getCartCount}}
