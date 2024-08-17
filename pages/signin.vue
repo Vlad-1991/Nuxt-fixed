@@ -13,6 +13,7 @@
       small(v-if="auth[1].error") {{auth[1].error}}
 
     button(class="btn main mt-[10px]" type="sumbit" :disabled="!validatedAuth" @click="SignIn") Sign In
+    SocialLogin(class="mt-[30px]")
     h4.danger(v-if="error") Invalid login or password
     div(class="mt-[10px]")
       nuxt-link(:to="{path: '/forgotpassword'}" tag="div")
@@ -24,6 +25,7 @@
 <script setup lang="ts">
 import {login} from "~/services/api/auth";
 import {load} from "~/services/api/requests";
+
 const AuthStore = useAuthStore()
 const UiStore = useUiStore()
 const router = useRouter()
@@ -34,7 +36,7 @@ definePageMeta({
 })
 
 onMounted(async () => {
-  if(AuthStore.isAuthentificated){
+  if (AuthStore.isAuthentificated) {
     router.push({name: 'index'})
   }
 })
@@ -65,6 +67,7 @@ const auth: Ref<arrInfoType[]> = ref([
 /* to check if all fields is valid to return true to enable Sign In button */
 let validatedAuth = computed(() => checkAllFields(auth.value))
 
+
 /* to collect email, password to object and send to server */
 const SignIn = async (): Promise<void> => {
   let authData = {
@@ -78,12 +81,12 @@ const SignIn = async (): Promise<void> => {
     error.value = false
     AuthStore.setToken(data.idToken)
     let userData = await load(VUE_APP_FB_URL + `/users/${encode(authData.email)}.json?auth=${data.idToken}`)
-    if(userData){
+    if (userData) {
       await AuthStore.setUserInfo(userData)
     }
     await router.push({name: 'index'})
   } catch (e: any | undefined) {
-    if(e.message === 'Request failed with status code 400'){
+    if (e.message === 'Request failed with status code 400') {
       error.value = true
     }
   }

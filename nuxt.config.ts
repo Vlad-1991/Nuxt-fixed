@@ -76,6 +76,36 @@ export default defineNuxtConfig({
             title: "Online Store",
             charset: "utf-8",
             viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
+            script: [
+                {
+                    hid: 'facebook-sdk',
+                    innerHTML: `
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId      : '839171601660576',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v20.0'
+              });
+              
+              FB.AppEvents.logPageView();   
+            };
+
+            (function(d, s, id){
+               var js, fjs = d.getElementsByTagName(s)[0];
+               if (d.getElementById(id)) {return;}
+               js = d.createElement(s); js.id = id;
+               js.src = "https://connect.facebook.net/en_US/sdk.js";
+               fjs.parentNode.insertBefore(js, fjs);
+             }(document, 'script', 'facebook-jssdk'));
+          `,
+                    type: 'text/javascript',
+                    charset: 'utf-8'
+                }
+            ],
+            __dangerouslyDisableSanitizersByTagID: {
+                'facebook-sdk': ['innerHTML']
+            }
         }
     },
     routeRules: {
@@ -159,7 +189,5 @@ export default defineNuxtConfig({
             },
         },
     },
-    image: {
-
-    }
+    image: {}
 })

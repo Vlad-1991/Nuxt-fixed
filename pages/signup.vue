@@ -43,7 +43,7 @@
       small(v-if="auth[7].error") {{auth[7].error}}
 
     button(class="btn main mt-[10px]" type="sumbit" :disabled="!validatedAuth" @click="SignUp") Sign Up
-
+    SocialLogin(class="mt-[30px]")
     teleport(to="body")
       AppModal(v-if="modal" title="Activate your profile" @close="modal = false") You successfully created account with email {{auth[0].val}}
 </template>

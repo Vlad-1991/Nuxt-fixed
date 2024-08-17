@@ -996,13 +996,20 @@ fieldset {
     @apply flex gap-[30px];
 }
 
-.footer-social img {
+
+
+.footer-social img, .social-login {
     transition: 0.35s ease;
 }
 
 .footer-social img:hover {
     filter: brightness(3);
 }
+
+.social-login img:hover path {
+    fill: #555555 !important;
+}
+
 
 .promo-field {
     @apply w-[200px];

@@ -26,7 +26,7 @@
                 h3.primary.inline-block(v-if="product_added") Product added to Cart
                 button.btn.orange.add_to_cart(class="mt-[20px] block" @click="modal = true" type="button") Buy Now
           div(v-html="product.description")
-        div(class="ml-[20px] text-center mx-auto")(v-else)
+        div(class="ml-[20px] text-center mx-auto" v-else)
           h1 There are no this product
           nuxtLink.link(:to="{name: 'catalog'}") Back to Catalog
       div.reviews-block(v-else)

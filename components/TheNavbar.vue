@@ -23,7 +23,7 @@
           fas(icon="shopping-cart" size="lg")
           span(class="cart-count") {{CartStore.getCartCount}}
       div(v-else)
-        nuxt-link(:to="{name: 'dashboard'}" class="main").mr20
+        nuxt-link(:to="{name: 'dashboard'}" class="main mr-[20px]")
           fas(icon="user" size="lg")
         button.btn.white.mr20(type="button" @click="AuthStore.logout") Logout
 </template>
