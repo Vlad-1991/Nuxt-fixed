@@ -2,7 +2,7 @@
   div(v-if="products")
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side(:categories="UiStore.getAllCategories" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
-      :style="{left: UiStore.sidebar}").mt20
+      :style="{left: UiStore.sidebar}" class="mt-[20px]")
     main.main-side
       h2(class="ml-[20px]") Cart
       h3(v-if="CartStore.getCartCount === 0") Cart is empty, please add some products first

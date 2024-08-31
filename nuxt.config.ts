@@ -8,7 +8,7 @@ export default defineNuxtConfig({
         }
     },
     devtools: {enabled: true},
-    css: ['~/assets/css/main.css', '~/theme.css'],
+    css: ['~/assets/css/main-tailwind.scss', '~/assets/css/theme.scss'],
     postcss: {
         plugins: {
             tailwindcss: {},

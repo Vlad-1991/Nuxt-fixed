@@ -2,7 +2,7 @@
   div
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side(v-if="categories_info" :categories="categories_info" :checkboxBestSeller="UiStore.getCheckboxBestSeller"
-      :style="{left: UiStore.sidebar}").mt20
+      :style="{left: UiStore.sidebar}" class="mt-[20px]")
     main.main-side(v-if="dataLoaded")
       div(v-if="!showReviews")
         div.product(v-if="product")

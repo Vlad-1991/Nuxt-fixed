@@ -43,6 +43,7 @@ export const loginWithApple = async (): Promise<void> => {
     let accessToken = ''
     let email = null
     const appleProvider = new OAuthProvider('apple.com')
+
     await signInWithPopup(auth, appleProvider).then((result): void => {
         accessToken = result.user.accessToken
         email = result.user.email

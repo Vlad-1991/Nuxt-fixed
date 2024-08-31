@@ -1,10 +1,10 @@
 <template lang="pug">
-  div
+div
     ToggleSidebar(@toggleSideBar="UiStore.toggleSidebar()")
     CategorySide.category-side(:checkboxBestSeller="checkboxBestSeller"
       @showBestSellers="changeShowBestsellers" @showCategory="showProductsInCategory" @showSubCategory="showProductsInSubCategory"
       :categories="UiStore.getAllCategories"
-      :style="{left: UiStore.sidebar}").mt20
+      :style="{left: UiStore.sidebar}" class="mt-[20px]")
     main.main-side
       h2(class="ml-[20px]") Catalog
       SearchProducts(@changedSearch="activateSearch")

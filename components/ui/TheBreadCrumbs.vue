@@ -2,7 +2,7 @@
   div.breadcrumbs
     span(v-if="breadcrumbs" v-for="(str, index) in breadcrumbs" )
       nuxt-link.link.inline-block(:to="str.link" :class="(index === (breadcrumbs.length - 1)) ? 'active_category' : ''") {{str.text}}
-      span(v-if="index < breadcrumbs.length - 1") &nbsp;>
+      span(v-if="index < breadcrumbs.length - 1") &nbsp;>&nbsp;
 </template>
 
 <!-- simple component to render row of breadcrumbs from current route

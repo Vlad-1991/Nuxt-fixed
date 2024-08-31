@@ -7,7 +7,7 @@
       div.skeleton-button
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .skeleton-card {
   display: flex;
   flex-direction: column;
